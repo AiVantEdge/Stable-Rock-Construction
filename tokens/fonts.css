@@ -1,0 +1,3 @@
+/* Stable Rock uses Google Fonts (no licensed binaries were provided).
+   Consumers load them from the Google CDN; @font-face rules are served by that stylesheet. */
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Archivo:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap");

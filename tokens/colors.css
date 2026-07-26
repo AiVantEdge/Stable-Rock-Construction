@@ -1,0 +1,42 @@
+:root{
+  /* Base palette */
+  --sr-bone: #f4f1ea;        /* page background — warm limestone */
+  --sr-panel: #fbfaf5;       /* raised panel / alternating section */
+  --sr-white: #ffffff;
+  --sr-stone: #e7e2d7;       /* muted fill, dividers on light */
+  --sr-ink: #1b1b1e;         /* body text, near-black */
+  --sr-charcoal: #17161a;    /* dark section background */
+  --sr-void: #0f0e11;        /* hero scrim base */
+  --sr-muted: #6c6a62;       /* secondary text on light */
+  --sr-muted-dark: #cbc9c2;  /* secondary text on dark */
+  --sr-red: #c01f28;         /* brand red — accents, primary action */
+  --sr-red-deep: #88161f;    /* hover / pressed red */
+  --sr-red-soft: #e08a8f;    /* red on dark backgrounds (eyebrows, ticks) */
+
+  /* Logo-derived hues — wordmark only, never UI surfaces */
+  --sr-steel: #9fbdd2;       /* "STABLE" — brushed steel blue */
+  --sr-rust: #c85a30;        /* "ROCK" — oxidized iron */
+
+  /* Lines */
+  --sr-line: rgba(24,22,18,0.14);
+  --sr-line-dark: rgba(255,255,255,0.14);
+
+  /* Semantic aliases */
+  --sr-surface-page: var(--sr-bone);
+  --sr-surface-panel: var(--sr-panel);
+  --sr-surface-raised: var(--sr-white);
+  --sr-surface-dark: var(--sr-charcoal);
+  --sr-text-primary: var(--sr-ink);
+  --sr-text-secondary: var(--sr-muted);
+  --sr-text-on-dark: var(--sr-white);
+  --sr-text-secondary-on-dark: var(--sr-muted-dark);
+  --sr-accent: var(--sr-red);
+  --sr-accent-hover: var(--sr-red-deep);
+  --sr-accent-on-dark: var(--sr-red-soft);
+  --sr-border: var(--sr-line);
+  --sr-border-on-dark: var(--sr-line-dark);
+
+  /* Overlays */
+  --sr-scrim-hero: linear-gradient(100deg, rgba(15,14,17,0.94) 0%, rgba(15,14,17,0.82) 38%, rgba(15,14,17,0.55) 60%, rgba(15,14,17,0.30) 82%, rgba(15,14,17,0.42) 100%);
+  --sr-scrim-caption: linear-gradient(to top, rgba(15,14,17,0.85), transparent);
+}

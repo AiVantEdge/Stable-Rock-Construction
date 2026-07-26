@@ -1,0 +1,20 @@
+:root{
+  --sr-space-1: 4px;
+  --sr-space-2: 8px;
+  --sr-space-3: 12px;
+  --sr-space-4: 14px;
+  --sr-space-5: 20px;
+  --sr-space-6: 24px;
+  --sr-space-7: 32px;
+  --sr-space-8: 36px;
+  --sr-space-9: 44px;
+  --sr-space-10: 64px;
+
+  /* Layout */
+  --sr-container: 1280px;
+  --sr-gutter: clamp(20px, 5vw, 72px);
+  --sr-section-y: clamp(72px, 11vh, 150px);
+  --sr-grid-gap: clamp(14px, 1.6vw, 22px);
+  --sr-card-pad: 36px 32px;
+  --sr-button-pad: 17px 34px;
+}

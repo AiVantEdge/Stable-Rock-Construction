@@ -1,0 +1,45 @@
+:root{
+  /* Families */
+  --sr-font-display: 'Oswald', 'Arial Narrow', sans-serif;   /* headlines, uppercase */
+  --sr-font-body: 'Archivo', system-ui, sans-serif;          /* body, UI, labels */
+  --sr-font-serif: 'Cormorant Garamond', Georgia, serif;     /* logotype, numerals, tile captions */
+
+  /* Weights */
+  --sr-weight-regular: 400;
+  --sr-weight-medium: 500;
+  --sr-weight-semibold: 600;
+  --sr-weight-bold: 700;
+
+  /* Display scale (fluid, matches site) */
+  --sr-size-hero: clamp(42px, 6.6vw, 92px);
+  --sr-size-h2: clamp(30px, 4.4vw, 58px);
+  --sr-size-h3: 23px;
+  --sr-size-h4: 18px;
+
+  /* Text scale */
+  --sr-size-lead: clamp(16px, 1.3vw, 19px);
+  --sr-size-body: 17px;
+  --sr-size-body-sm: 15px;
+  --sr-size-label: 12px;      /* eyebrows */
+  --sr-size-meta: 11.5px;     /* topbar, tile meta */
+  --sr-size-button: 14px;
+
+  /* Line heights */
+  --sr-leading-display: 1.02;
+  --sr-leading-hero: 0.98;
+  --sr-leading-body: 1.8;
+  --sr-leading-tight: 1.65;
+
+  /* Tracking */
+  --sr-tracking-hero: 0.01em;
+  --sr-tracking-eyebrow: 0.3em;
+  --sr-tracking-button: 0.1em;
+  --sr-tracking-nav: 0.14em;
+  --sr-tracking-meta: 0.12em;
+  --sr-tracking-lockup: 0.4em;
+
+  /* Measures */
+  --sr-measure-lead: 52ch;
+  --sr-measure-body: 36ch;
+  --sr-measure-headline: 16ch;
+}
