@@ -70,15 +70,31 @@ function Hero({ onNavigate }) {
 }
 
 function ServiceCardTile({ i, title, description, trade, photo, video, onNavigate }) {
-  const { TradeBadge } = window.SRKit;
+  const { TradeBadge, useIsMobile } = window.SRKit;
+  const isMobile = useIsMobile();
   const [hover, setHover] = React.useState(false);
   const videoRef = React.useRef(null);
   React.useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
-    if (hover) { v.currentTime = 0; v.play().catch(() => {}); }
-    else { v.pause(); v.currentTime = 0; }
-  }, [hover]);
+    v.muted = true; // required for autoplay without a user gesture
+    if (!isMobile) {
+      // Desktop: play on hover, reset to the first frame when the pointer leaves.
+      if (hover) { v.currentTime = 0; v.play().catch(() => {}); }
+      else { v.pause(); v.currentTime = 0; }
+      return;
+    }
+    // Mobile: no hover, and the first frame rarely shows what the trade is —
+    // so play each clip whenever its card is on screen (and pause it off screen).
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) v.play().catch(() => {});
+        else v.pause();
+      });
+    }, { threshold: 0.2 });
+    io.observe(v);
+    return () => io.disconnect();
+  }, [hover, isMobile]);
   return (
     <a href={SR_URL('service:' + trade)} onClick={() => onNavigate('service:' + trade)}
       onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
