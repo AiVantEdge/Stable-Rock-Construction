@@ -17,7 +17,7 @@ const SERVICE_CONTENT = {
       ['Permit and schedule', 'We pull the permit and give you the crew date in writing.'],
       ['Install and inspection', 'Built the way an inspector expects to see it, then walked with you at the end.'],
     ],
-    photos: [['roof-tearoff.jpg', 'Tear-Off & Prep', 'Re-Roof \u00b7 Miami-Dade'], ['roof-torch.jpg', 'Torch-Down System', 'Modified Bitumen \u00b7 Miami'], ['roof-finished.jpg', 'Finished System', 'Single-Family \u00b7 Miami-Dade']],
+    photos: null,
     beforeAfter: {
       before: 'assets/imagery/roof-before.png',
       after: 'assets/imagery/roof-after.png',
@@ -223,6 +223,8 @@ const SERVICE_CONTENT = {
 };
 
 function ServiceScreen({ trade = 'roofing', onNavigate }) {
+  const isMobile = window.SRKit.useIsMobile();
+  const isTablet = window.SRKit.useIsTablet();
   const { TradeBadge, BeforeAfter } = window.SRKit;
   const c = SERVICE_CONTENT[trade] || SERVICE_CONTENT.roofing;
   const eyebrow = (color) => ({
@@ -263,7 +265,7 @@ function ServiceScreen({ trade = 'roofing', onNavigate }) {
       </section>
 
       <section style={{ padding: 'var(--sr-section-y) var(--sr-gutter)' }}>
-        <div style={{ maxWidth: 'var(--sr-container)', margin: '0 auto', display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: 'clamp(40px,6vw,88px)' }}>
+        <div style={{ maxWidth: 'var(--sr-container)', margin: '0 auto', display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1.1fr 0.9fr', gap: 'clamp(40px,6vw,88px)' }}>
           <div>
             <p style={eyebrow()}>{c.answerEyebrow}</p>
             <h2 style={{ fontFamily: 'var(--sr-font-display)', fontWeight: 700, textTransform: 'uppercase', fontSize: 'clamp(26px,3.2vw,42px)', lineHeight: 1.06, margin: '0 0 24px' }}>
@@ -292,7 +294,7 @@ function ServiceScreen({ trade = 'roofing', onNavigate }) {
           <h2 style={{ fontFamily: 'var(--sr-font-display)', fontWeight: 700, textTransform: 'uppercase', fontSize: 'var(--sr-size-h2)', lineHeight: 'var(--sr-leading-display)', margin: '0 0 clamp(36px,5vw,56px)', maxWidth: '18ch' }}>
             Four steps, no surprises.
           </h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 1, background: 'rgba(255,255,255,0.14)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : isTablet ? 'repeat(2,1fr)' : 'repeat(4,1fr)', gap: 1, background: 'rgba(255,255,255,0.14)' }}>
             {c.steps.map(([t, d], i) => (
               <div key={t} style={{ background: 'var(--sr-charcoal)', padding: '30px 26px', borderTop: 'var(--sr-rule-accent)' }}>
                 <span style={{ fontFamily: 'var(--sr-font-serif)', fontWeight: 600, fontSize: 17, color: 'var(--sr-red-soft)' }}>{String(i + 1).padStart(2, '0')}</span>
@@ -306,7 +308,7 @@ function ServiceScreen({ trade = 'roofing', onNavigate }) {
 
       {c.beforeAfter ? (
         <section style={{ padding: 'var(--sr-section-y) var(--sr-gutter)', background: 'var(--sr-panel)', borderTop: 'var(--sr-rule-hairline)' }}>
-          <div style={{ maxWidth: 'var(--sr-container)', margin: '0 auto', display: 'grid', gridTemplateColumns: '0.85fr 1.15fr', gap: 'clamp(36px,5vw,72px)', alignItems: 'center' }}>
+          <div style={{ maxWidth: 'var(--sr-container)', margin: '0 auto', display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '0.85fr 1.15fr', gap: 'clamp(36px,5vw,72px)', alignItems: 'center' }}>
             <div>
               <p style={eyebrow()}>Before &amp; After</p>
               <h2 style={{ fontFamily: 'var(--sr-font-display)', fontWeight: 700, textTransform: 'uppercase', fontSize: 'clamp(26px,3.2vw,42px)', lineHeight: 1.06, margin: '0 0 22px' }}>
@@ -352,7 +354,7 @@ function ServiceScreen({ trade = 'roofing', onNavigate }) {
 
       {c.photos ? (
         <section style={{ padding: 'var(--sr-section-y) var(--sr-gutter)' }}>
-          <div style={{ maxWidth: 'var(--sr-container)', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 'var(--sr-grid-gap)' }}>
+          <div style={{ maxWidth: 'var(--sr-container)', margin: '0 auto', display: 'grid', gridTemplateColumns: isMobile ? '1fr' : isTablet ? 'repeat(2,1fr)' : 'repeat(3,1fr)', gap: 'var(--sr-grid-gap)' }}>
             {c.photos.map(([f, t, m]) => (
               <figure key={f} style={{ position: 'relative', aspectRatio: '4/5', overflow: 'hidden', margin: 0 }}>
                 <img src={'assets/imagery/' + f} alt={t + ' in ' + m} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />

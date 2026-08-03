@@ -6,20 +6,20 @@ const T = {
   serif: "var(--sr-font-serif)",
 };
 
-function UtilityBar() {
+function UtilityBar({ isMobile }) {
   return (
     <div style={{
       display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 6,
-      padding: '9px var(--sr-gutter)', fontSize: 'var(--sr-size-meta)', letterSpacing: '0.1em',
+      padding: isMobile ? '7px var(--sr-gutter)' : '9px var(--sr-gutter)', fontSize: 'var(--sr-size-meta)', letterSpacing: '0.1em',
       textTransform: 'uppercase', color: '#fff', background: 'rgba(0,0,0,0.35)', fontFamily: T.body,
     }}>
       <span style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
         <span style={{ color: 'var(--sr-red-soft)', fontWeight: 600, letterSpacing: '0.16em' }}>Veteran-Owned</span>
-        <span style={{ opacity: .4 }}>/</span>
-        <span style={{ opacity: .82 }}>Licensed &amp; Insured</span>
+        {!isMobile ? <span style={{ opacity: .4 }}>/</span> : null}
+        {!isMobile ? <span style={{ opacity: .82 }}>Licensed &amp; Insured</span> : null}
       </span>
       <span style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-        <span style={{ opacity: .82 }}>Miami &middot; Florida Keys &middot; SWFL</span>
+        {!isMobile ? <span style={{ opacity: .82 }}>Miami &middot; Florida Keys &middot; SWFL</span> : null}
         <a href="tel:7866227663" style={{
           background: 'var(--sr-red)', color: '#fff', textDecoration: 'none', fontWeight: 600,
           letterSpacing: 'var(--sr-tracking-meta)', padding: '6px 14px', borderRadius: 'var(--sr-radius-pill)',
@@ -46,26 +46,67 @@ function Logo({ size = 80, labelSize = 32 }) {
 }
 
 function Header({ route, onNavigate }) {
+  const { useIsMobile } = window.SRKit;
+  const isMobile = useIsMobile();
+  const [menuOpen, setMenuOpen] = React.useState(false);
   const link = {
     textDecoration: 'none', color: '#fff', fontFamily: T.body, fontSize: 13, fontWeight: 500,
     letterSpacing: 'var(--sr-tracking-nav)', textTransform: 'uppercase', opacity: .9, cursor: 'pointer',
   };
+  const go = (fn) => { setMenuOpen(false); fn(); };
+  const navItems = [
+    ['Services', () => onNavigate('service:roofing'), '/roofing'],
+    ['Advantage', () => onNavigate('home'), '/'],
+    ['Work', () => onNavigate('home'), '/'],
+    ['FAQ', () => onNavigate('home'), '/'],
+  ];
   return (
     <header style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 90 }}>
-      <UtilityBar />
-      <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px var(--sr-gutter)' }}>
-        <a href="/" onClick={() => onNavigate('home')} style={{ textDecoration: 'none', cursor: 'pointer' }}><Logo /></a>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(18px,2.4vw,38px)' }}>
-          <a href="/roofing" onClick={() => onNavigate('service:roofing')} style={{ ...link, opacity: route.indexOf('service') === 0 ? 1 : .9 }}>Services</a>
-          <a href="/" onClick={() => onNavigate('home')} style={link}>Advantage</a>
-          <a href="/" onClick={() => onNavigate('home')} style={link}>Work</a>
-          <a href="/" onClick={() => onNavigate('home')} style={link}>FAQ</a>
-          <a href="/#quote" onClick={() => onNavigate('quote')} style={{
-            ...link, background: 'var(--sr-red)', fontWeight: 600, letterSpacing: 'var(--sr-tracking-button)',
-            padding: '14px 26px', opacity: 1,
-          }}>Free Quote</a>
-        </div>
+      <UtilityBar isMobile={isMobile} />
+      <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: isMobile ? '10px var(--sr-gutter)' : '14px var(--sr-gutter)' }}>
+        <a href="/" onClick={() => go(() => onNavigate('home'))} style={{ textDecoration: 'none', cursor: 'pointer' }}>
+          <Logo size={isMobile ? 50 : 80} labelSize={isMobile ? 21 : 32} />
+        </a>
+        {isMobile ? (
+          <button onClick={() => setMenuOpen(o => !o)} aria-label={menuOpen ? 'Close menu' : 'Open menu'} aria-expanded={menuOpen}
+            style={{ all: 'unset', cursor: 'pointer', width: 44, height: 44, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 5 }}>
+            <span style={{ width: 26, height: 2, background: '#fff', transition: 'transform var(--sr-dur-fast), opacity var(--sr-dur-fast)', transform: menuOpen ? 'translateY(7px) rotate(45deg)' : 'none' }} />
+            <span style={{ width: 26, height: 2, background: '#fff', transition: 'opacity var(--sr-dur-fast)', opacity: menuOpen ? 0 : 1 }} />
+            <span style={{ width: 26, height: 2, background: '#fff', transition: 'transform var(--sr-dur-fast)', transform: menuOpen ? 'translateY(-7px) rotate(-45deg)' : 'none' }} />
+          </button>
+        ) : (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(18px,2.4vw,38px)' }}>
+            {navItems.map(([label, fn, href]) => (
+              <a key={label} href={href} onClick={(e) => { e.preventDefault(); fn(); }}
+                style={{ ...link, opacity: label === 'Services' && route.indexOf('service') === 0 ? 1 : .9 }}>{label}</a>
+            ))}
+            <a href="/#quote" onClick={(e) => { e.preventDefault(); onNavigate('quote'); }} style={{
+              ...link, background: 'var(--sr-red)', fontWeight: 600, letterSpacing: 'var(--sr-tracking-button)',
+              padding: '14px 26px', opacity: 1,
+            }}>Free Quote</a>
+          </div>
+        )}
       </nav>
+      {isMobile && menuOpen ? (
+        <div style={{
+          background: 'var(--sr-charcoal)', borderTop: 'var(--sr-rule-accent)',
+          padding: '6px var(--sr-gutter) 22px', display: 'flex', flexDirection: 'column',
+          boxShadow: '0 24px 40px -20px rgba(0,0,0,0.6)',
+        }}>
+          {navItems.map(([label, fn]) => (
+            <a key={label} href="#" onClick={(e) => { e.preventDefault(); go(fn); }}
+              style={{ ...link, opacity: 1, fontSize: 15, padding: '16px 0', borderBottom: '1px solid rgba(255,255,255,0.12)' }}>{label}</a>
+          ))}
+          <a href="/#quote" onClick={(e) => { e.preventDefault(); go(() => onNavigate('quote')); }} style={{
+            ...link, background: 'var(--sr-red)', fontWeight: 600, letterSpacing: 'var(--sr-tracking-button)',
+            textAlign: 'center', padding: '15px 26px', opacity: 1, marginTop: 18,
+          }}>Free Quote</a>
+          <a href="tel:7866227663" style={{
+            ...link, textAlign: 'center', padding: '14px 26px', opacity: .95, marginTop: 10,
+            border: '1px solid rgba(255,255,255,0.35)',
+          }}>Call 786-622-ROOF</a>
+        </div>
+      ) : null}
     </header>
   );
 }

@@ -55,7 +55,7 @@
 <script src="https://unpkg.com/@babel/standalone@7/babel.min.js" crossorigin></script>
 <script>
   (async function () {
-    var files = ['TradeBadge.jsx', 'BeforeAfter.jsx', 'Chrome.jsx', 'HomeScreen.jsx', 'ServiceScreen.jsx', 'App.jsx'];
+    var files = ['Responsive.jsx', 'TradeBadge.jsx', 'BeforeAfter.jsx', 'Chrome.jsx', 'HomeScreen.jsx', 'ServiceScreen.jsx', 'App.jsx'];
     for (var i = 0; i < files.length; i++) {
       var src = await (await fetch('app/' + files[i])).text();
       (0, eval)(Babel.transform(src, { presets: [['react', { runtime: 'classic' }]], sourceType: 'script' }).code);

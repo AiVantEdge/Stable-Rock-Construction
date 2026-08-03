@@ -31,6 +31,7 @@ const bodyP = (color = 'var(--sr-muted)') => ({
 });
 
 function Hero({ onNavigate }) {
+  const isMobile = window.SRKit.useIsMobile();
   const cta = {
     fontFamily: 'var(--sr-font-body)', fontSize: 'var(--sr-size-button)', fontWeight: 600,
     letterSpacing: 'var(--sr-tracking-button)', textTransform: 'uppercase', padding: 'var(--sr-button-pad)',
@@ -41,7 +42,7 @@ function Hero({ onNavigate }) {
       <img src="assets/imagery/hero-truck.webp" alt="Stable Rock Construction crew installing a metal roof on a Miami luxury home with the branded company truck in the driveway"
         style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
       <div style={{ position: 'absolute', inset: 0, background: 'var(--sr-scrim-hero)' }}></div>
-      <div style={{ position: 'relative', zIndex: 2, ...inner({ padding: 'clamp(170px,22vh,230px) var(--sr-gutter) clamp(60px,8vh,96px)', width: '100%' }) }}>
+      <div style={{ position: 'relative', zIndex: 2, ...inner({ padding: isMobile ? '128px var(--sr-gutter) 56px' : 'clamp(170px,22vh,230px) var(--sr-gutter) clamp(60px,8vh,96px)', width: '100%' }) }}>
         <p style={{ ...eyebrow('#fff'), margin: '0 0 26px' }}>Miami &middot; Florida Keys &middot; Southwest Florida</p>
         <h1 style={{
           fontFamily: 'var(--sr-font-display)', fontWeight: 700, textTransform: 'uppercase',
@@ -128,6 +129,7 @@ function FAQRow({ q, a, open, onToggle }) {
 }
 
 function QuoteBlock() {
+  const isMobile = window.SRKit.useIsMobile();
   const [sent, setSent] = React.useState(false);
   const [picked, setPicked] = React.useState(['Roofing']);
   const label = { fontFamily: 'var(--sr-font-body)', fontSize: 11.5, fontWeight: 600, letterSpacing: 'var(--sr-tracking-meta)', textTransform: 'uppercase', color: 'var(--sr-ink)', display: 'flex', flexDirection: 'column', gap: 7 };
@@ -135,7 +137,7 @@ function QuoteBlock() {
   const chips = ['Roofing', 'Plumbing', 'Mechanical / HVAC', 'General Construction', 'Windows & Doors', 'Kitchen Remodel', 'Bathroom Remodel', 'Other'];
   return (
     <section id="quote" style={section({ background: 'var(--sr-charcoal)', color: '#fff' })}>
-      <div style={inner({ maxWidth: 1200, display: 'grid', gridTemplateColumns: '0.82fr 1.18fr', gap: 'clamp(40px,5vw,76px)', alignItems: 'start' })}>
+      <div style={inner({ maxWidth: 1200, display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '0.82fr 1.18fr', gap: 'clamp(40px,5vw,76px)', alignItems: 'start' })}>
         <div>
           <p style={eyebrow('var(--sr-red-soft)')}>Free Quote</p>
           <h2 style={{ ...h2('#fff'), marginBottom: 28 }}>Tell us what you need.</h2>
@@ -163,11 +165,11 @@ function QuoteBlock() {
             </div>
           ) : (
             <form onSubmit={(e) => { e.preventDefault(); setSent(true); }} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 14 }}>
                 <label style={label}>Full name *<input required placeholder="Jane Smith" style={input} /></label>
                 <label style={label}>Phone *<input required type="tel" placeholder="(305) 000-0000" style={input} /></label>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 14 }}>
                 <label style={label}>Email<input type="email" placeholder="you@email.com" style={input} /></label>
                 <label style={label}>City / ZIP<input placeholder="Miami, 33101" style={input} /></label>
               </div>
@@ -205,14 +207,16 @@ function QuoteBlock() {
 
 function HomeScreen({ onNavigate }) {
   const [openFaq, setOpenFaq] = React.useState(0);
-  const { Marquee } = window.SRKit;
+  const { Marquee, useIsMobile, useIsTablet } = window.SRKit;
+  const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
   return (
     <div>
       <Hero onNavigate={onNavigate} />
       <Marquee />
 
       <section style={section()}>
-        <div style={inner({ display: 'grid', gridTemplateColumns: '1.05fr 0.95fr', gap: 'clamp(40px,6vw,88px)', alignItems: 'start' })}>
+        <div style={inner({ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1.05fr 0.95fr', gap: 'clamp(40px,6vw,88px)', alignItems: 'start' })}>
           <div>
             <p style={eyebrow()}>Who We Are</p>
             <h2 style={{ ...h2(), maxWidth: '20ch' }}>Roofing is what we&rsquo;re known for. We handle the whole house.</h2>
@@ -248,14 +252,14 @@ function HomeScreen({ onNavigate }) {
               <h2 style={{ ...h2(), maxWidth: '15ch' }}>Every trade, under one roof.</h2>
             </div>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 1, background: 'var(--sr-line)', border: '1px solid var(--sr-line)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : isTablet ? 'repeat(2,1fr)' : 'repeat(3,1fr)', gap: 1, background: 'var(--sr-line)', border: '1px solid var(--sr-line)' }}>
             {SERVICES.map(([t, d, tr, ph, vid], i) => <ServiceCardTile key={t} i={i + 1} title={t} description={d} trade={tr} photo={ph} video={vid} onNavigate={onNavigate} />)}
           </div>
         </div>
       </section>
 
       <section style={section({ background: 'var(--sr-charcoal)', color: '#fff' })}>
-        <div style={inner({ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(40px,6vw,80px)', alignItems: 'center' })}>
+        <div style={inner({ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 'clamp(40px,6vw,80px)', alignItems: 'center' })}>
           <div>
             <p style={eyebrow('var(--sr-red-soft)')}>The Stable Rock Advantage</p>
             <h2 style={{ ...h2('#fff'), marginBottom: 28 }}>We build with the inspector in mind.</h2>
@@ -303,8 +307,8 @@ function HomeScreen({ onNavigate }) {
       </section>
 
       <section style={section({ background: 'var(--sr-charcoal)', color: '#fff' })}>
-        <div style={inner({ display: 'grid', gridTemplateColumns: 'minmax(280px,380px) 1fr', gap: 'clamp(32px,5vw,72px)', alignItems: 'center' })}>
-          <div style={{ position: 'relative', background: '#000', borderTop: 'var(--sr-rule-accent)' }}>
+        <div style={inner({ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'minmax(280px,380px) 1fr', gap: 'clamp(32px,5vw,72px)', alignItems: 'center' })}>
+          <div style={{ position: 'relative', background: '#000', borderTop: 'var(--sr-rule-accent)', width: '100%', maxWidth: isMobile ? 320 : 'none', margin: isMobile ? '0 auto' : 0 }}>
             <video
               src="assets/video/abner-inspector.mp4"
               controls
@@ -329,7 +333,7 @@ function HomeScreen({ onNavigate }) {
       </section>
 
       <section style={section({ background: 'var(--sr-stone)' })}>
-        <div style={inner({ display: 'grid', gridTemplateColumns: '0.9fr 1.1fr', gap: 'clamp(40px,6vw,96px)', alignItems: 'center' })}>
+        <div style={inner({ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '0.9fr 1.1fr', gap: 'clamp(40px,6vw,96px)', alignItems: 'center' })}>
           <div>
             <p style={eyebrow()}>Do It All At Once</p>
             <h2 style={{ ...h2(), marginBottom: 28 }}>One contractor. Every project. Real savings.</h2>
@@ -344,12 +348,13 @@ function HomeScreen({ onNavigate }) {
               ['Roof', 'A/C', 'Replace both before storm season and protect the whole home at once.', true]].map(([a, b, copy, dark]) => (
               <div key={a + b} style={{
                 background: dark ? 'var(--sr-charcoal)' : 'var(--sr-panel)', color: dark ? '#fff' : 'var(--sr-ink)',
-                padding: '28px 30px', display: 'flex', alignItems: 'center', gap: 22,
+                padding: isMobile ? '24px 24px' : '28px 30px', display: 'flex',
+                flexDirection: isMobile ? 'column' : 'row', alignItems: isMobile ? 'flex-start' : 'center', gap: isMobile ? 14 : 22,
               }}>
                 <span style={{ fontFamily: 'var(--sr-font-serif)', fontWeight: 600, fontSize: 'clamp(24px,2.6vw,32px)', whiteSpace: 'nowrap' }}>
                   {a} <span style={{ color: dark ? 'var(--sr-red-soft)' : 'var(--sr-red)' }}>+</span> {b}
                 </span>
-                <span style={{ height: 38, width: 1, background: dark ? 'rgba(255,255,255,0.22)' : 'var(--sr-line)' }}></span>
+                <span style={{ height: isMobile ? 1 : 38, width: isMobile ? '100%' : 1, background: dark ? 'rgba(255,255,255,0.22)' : 'var(--sr-line)' }}></span>
                 <span style={{ fontFamily: 'var(--sr-font-body)', fontSize: 14, lineHeight: 1.6, color: dark ? 'var(--sr-muted-dark)' : 'var(--sr-muted)' }}>{copy}</span>
               </div>
             ))}
