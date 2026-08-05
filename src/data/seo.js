@@ -14,20 +14,49 @@ const AREA_SERVED = [
   { '@type': 'AdministrativeArea', name: 'Southwest Florida' },
 ];
 
+/* Florida DBPR certifications held by the owner/qualifier (Chapter 489). */
+export const LICENSES = [
+  { name: 'Florida Certified General Contractor', id: 'CGC1521744' },
+  { name: 'Florida Certified Roofing Contractor', id: 'CCC1332548' },
+  { name: 'Florida Certified Plumbing Contractor', id: 'CFC1433873' },
+  { name: 'Florida Certified Mechanical Contractor', id: 'CMC1251627' },
+];
+
+const CREDENTIALS = LICENSES.map((l) => ({
+  '@type': 'EducationalOccupationalCredential',
+  credentialCategory: 'license',
+  name: `${l.name} (${l.id})`,
+  recognizedBy: { '@type': 'GovernmentOrganization', name: 'Florida Department of Business and Professional Regulation' },
+}));
+
+export const FOUNDER_ID = SITE + '/#abner-nunez';
+
+/* The owner/qualifying contractor. Strong E-E-A-T / authority entity for AI. */
+export const founderNode = {
+  '@type': 'Person',
+  '@id': FOUNDER_ID,
+  name: 'Abner Nunez',
+  jobTitle: 'Owner & Qualifying Contractor',
+  worksFor: { '@id': BUSINESS_ID },
+  hasCredential: CREDENTIALS,
+};
+
 /* The shared business node, referenced by @id from every page graph. */
 export const businessNode = {
-  '@type': ['LocalBusiness', 'RoofingContractor', 'GeneralContractor'],
+  '@type': ['LocalBusiness', 'RoofingContractor', 'GeneralContractor', 'HVACBusiness', 'Plumber'],
   '@id': BUSINESS_ID,
   name: 'Stable Rock Construction LLC',
-  description: 'Veteran-owned South Florida builder. Roofing, plumbing, mechanical/HVAC, general construction, impact windows, and remodels under one license.',
+  description: 'Veteran-owned South Florida builder, Florida state-certified in general construction, roofing, plumbing, and mechanical/HVAC. Roofing, plumbing, HVAC, general construction, impact windows, and remodels under one license.',
   url: SITE,
   telephone: '+1-786-622-7663',
   email: 'info@stablerockconstruction.com',
   image: OG_IMAGE,
   logo: SITE + '/assets/logo/stable-rock-logo-white-bg.png',
   priceRange: '$$',
-  address: { '@type': 'PostalAddress', addressRegion: 'FL', addressCountry: 'US', addressLocality: 'Miami' },
+  address: { '@type': 'PostalAddress', streetAddress: '3110 NW 4th St', addressLocality: 'Miami', addressRegion: 'FL', postalCode: '33125', addressCountry: 'US' },
   areaServed: AREA_SERVED,
+  founder: { '@id': FOUNDER_ID },
+  hasCredential: CREDENTIALS,
   knowsAbout: ['Roofing', 'Plumbing', 'HVAC', 'General construction', 'Impact windows and doors', 'Kitchen and bath remodels'],
 };
 
@@ -83,6 +112,7 @@ export function homeSchema() {
     '@context': 'https://schema.org',
     '@graph': [
       businessNode,
+      founderNode,
       { '@type': 'WebSite', '@id': SITE + '/#website', url: SITE, name: 'Stable Rock Construction LLC', publisher: { '@id': BUSINESS_ID } },
       {
         '@type': 'FAQPage',
@@ -101,6 +131,7 @@ export function serviceSchema(trade) {
     '@context': 'https://schema.org',
     '@graph': [
       businessNode,
+      founderNode,
       {
         '@type': 'Service',
         serviceType: c.label,

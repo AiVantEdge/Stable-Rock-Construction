@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useIsMobile } from './hooks.js';
 import { SR_URL } from '../data/services.js';
+import { LICENSES } from '../data/seo.js';
 
 const T = {
   display: 'var(--sr-font-display)',
@@ -149,7 +150,10 @@ export function Footer() {
           <p style={{ fontFamily: T.body, fontSize: 14, lineHeight: 1.75, color: '#a29f97', margin: '0 0 14px' }}>
             Veteran-owned. Roofing, plumbing, mechanical, and general contracting under one licensed roof.
           </p>
-          <p style={{ fontFamily: T.body, fontSize: 12, color: '#7f7d75', margin: 0 }}>License #: <span style={{ color: '#a29f97' }}>[ to be added ]</span></p>
+          <p style={{ fontFamily: T.body, fontSize: 12, color: '#7f7d75', margin: '0 0 4px' }}>Florida State Certified &middot; Licensed &amp; Insured</p>
+          <p style={{ fontFamily: T.body, fontSize: 12, color: '#7f7d75', margin: 0, lineHeight: 1.7 }}>
+            {LICENSES.map((l) => l.id).join(' · ')}
+          </p>
         </div>
         <div style={{ display: 'flex', gap: 56, flexWrap: 'wrap' }}>
           <div style={col}>
