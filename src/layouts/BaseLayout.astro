@@ -1,0 +1,53 @@
+---
+import '../styles/global.css';
+import { Header, Footer } from '../components/Chrome.jsx';
+import { SITE, OG_IMAGE } from '../data/seo.js';
+
+const {
+  title,
+  description,
+  path = '/',
+  active = 'home',
+  schema = null,
+  ogImage = OG_IMAGE,
+} = Astro.props;
+
+const canonical = SITE + path;
+const fontsHref = 'https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Archivo:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap';
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Stable Rock Construction LLC" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={ogImage} />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <meta name="geo.region" content="US-FL" />
+  <meta name="geo.placename" content="Miami, Florida" />
+
+  <link rel="icon" href="/assets/logo/stable-rock-logo-white-bg.png" />
+  <link rel="apple-touch-icon" href="/assets/logo/stable-rock-logo-white-bg.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href={fontsHref} />
+
+  {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+</head>
+<body>
+  <Header client:load active={active} />
+  <slot />
+  <Footer />
+</body>
+</html>

@@ -1,2 +1,13 @@
 # Local Claude Code / dev tooling config
 .claude/
+
+# Dependencies
+node_modules/
+
+# Astro build output & cache
+dist/
+.astro/
+
+# Env
+.env
+.env.production

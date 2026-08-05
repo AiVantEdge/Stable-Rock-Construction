@@ -1,0 +1,20 @@
+/* Design tokens (fonts are loaded via <link> in BaseLayout for performance). */
+@import "./tokens/colors.css";
+@import "./tokens/typography.css";
+@import "./tokens/spacing.css";
+@import "./tokens/effects.css";
+
+*{ box-sizing: border-box; }
+html, body{ margin: 0; }
+body{
+  background: var(--sr-bone);
+  color: var(--sr-ink);
+  font-family: var(--sr-font-body);
+  -webkit-font-smoothing: antialiased;
+}
+a{ color: var(--sr-red); }
+a:hover{ color: var(--sr-red-deep); }
+::selection{ background: var(--sr-red); color: #fff; }
+
+@keyframes srMarquee{ from{ transform: translateX(0); } to{ transform: translateX(-50%); } }
+input:focus, textarea:focus{ outline: none; border-color: var(--sr-red) !important; }

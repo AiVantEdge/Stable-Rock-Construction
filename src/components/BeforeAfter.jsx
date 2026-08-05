@@ -1,5 +1,7 @@
 /* Before/after drag comparison. Pointer-draggable handle plus a keyboard-accessible range input. */
-function BeforeAfter({
+import { useState, useEffect, useRef } from 'react';
+
+export default function BeforeAfter({
   before,
   after,
   beforeLabel = 'Before',
@@ -7,20 +9,17 @@ function BeforeAfter({
   beforeAlt = 'Before',
   afterAlt = 'After',
   ratio = '4/3',
-  /* Per-image alignment so the two shots register: object-position plus optional zoom. */
   beforeFocus = '50% 50%',
   afterFocus = '50% 50%',
   beforeZoom = 1,
   afterZoom = 1,
-  /* "x%,y%" nudge applied after the zoom, for registering two shots taken from different spots */
   beforeShift = '0%,0%',
   afterShift = '0%,0%',
   style,
 }) {
-  const [pos, setPos] = React.useState(50);
-  const [dragging, setDragging] = React.useState(false);
-  const wrapRef = React.useRef(null);
-  /* clip-path keeps the before layer full-size, so no measurement is needed on first paint */
+  const [pos, setPos] = useState(50);
+  const [dragging, setDragging] = useState(false);
+  const wrapRef = useRef(null);
 
   const setFromClientX = (clientX) => {
     const el = wrapRef.current;
@@ -30,7 +29,7 @@ function BeforeAfter({
     setPos(Math.max(0, Math.min(100, p)));
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!dragging) return;
     const move = (e) => setFromClientX(e.touches ? e.touches[0].clientX : e.clientX);
     const up = () => setDragging(false);
@@ -105,5 +104,3 @@ function BeforeAfter({
     </div>
   );
 }
-
-window.SRKit = Object.assign(window.SRKit || {}, { BeforeAfter });

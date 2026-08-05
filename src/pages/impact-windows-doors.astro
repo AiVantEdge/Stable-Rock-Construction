@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ServiceScreen from '../components/ServiceScreen.jsx';
+import { PAGE_META, serviceSchema } from '../data/seo.js';
+
+const trade = 'windows';
+const m = PAGE_META[trade];
+---
+<BaseLayout title={m.title} description={m.description} path={m.path} active="service" schema={serviceSchema(trade)}>
+  <ServiceScreen trade={trade} client:load />
+</BaseLayout>

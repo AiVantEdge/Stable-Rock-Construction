@@ -1,9 +1,12 @@
-/* Header, utility bar, marquee and footer for the Stable Rock marketing site.
-   Registers on window.SRKit so index.html can mount without a build step. */
+/* Header, marquee and footer for the Stable Rock marketing site. */
+import { useState } from 'react';
+import { useIsMobile } from './hooks.js';
+import { SR_URL } from '../data/services.js';
+
 const T = {
-  display: "var(--sr-font-display)",
-  body: "var(--sr-font-body)",
-  serif: "var(--sr-font-serif)",
+  display: 'var(--sr-font-display)',
+  body: 'var(--sr-font-body)',
+  serif: 'var(--sr-font-serif)',
 };
 
 function UtilityBar({ isMobile }) {
@@ -29,10 +32,10 @@ function UtilityBar({ isMobile }) {
   );
 }
 
-function Logo({ size = 80, labelSize = 32 }) {
+export function Logo({ size = 80, labelSize = 32 }) {
   return (
     <span style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-      <img src="assets/logo/stable-rock-logo-white-bg.png" alt="Stable Rock Construction LLC"
+      <img src="/assets/logo/stable-rock-logo-white-bg.png" alt="Stable Rock Construction LLC"
         style={{ height: size, width: size, objectFit: 'contain' }} />
       <span style={{ display: 'flex', flexDirection: 'column', lineHeight: 1 }}>
         <span style={{ fontFamily: T.serif, fontWeight: 600, fontSize: labelSize, letterSpacing: '0.02em' }}>
@@ -45,30 +48,29 @@ function Logo({ size = 80, labelSize = 32 }) {
   );
 }
 
-function Header({ route, onNavigate }) {
-  const { useIsMobile } = window.SRKit;
+const NAV_ITEMS = [
+  ['Services', '/roofing'],
+  ['Advantage', '/#advantage'],
+  ['Work', '/#bundles'],
+  ['FAQ', '/#faq'],
+];
+
+export function Header({ active = 'home' }) {
   const isMobile = useIsMobile();
-  const [menuOpen, setMenuOpen] = React.useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const link = {
     textDecoration: 'none', color: '#fff', fontFamily: T.body, fontSize: 13, fontWeight: 500,
     letterSpacing: 'var(--sr-tracking-nav)', textTransform: 'uppercase', opacity: .9, cursor: 'pointer',
   };
-  const go = (fn) => { setMenuOpen(false); fn(); };
-  const navItems = [
-    ['Services', () => onNavigate('service:roofing'), '/roofing'],
-    ['Advantage', () => onNavigate('home'), '/'],
-    ['Work', () => onNavigate('home'), '/'],
-    ['FAQ', () => onNavigate('home'), '/'],
-  ];
   return (
     <header style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 90 }}>
       <UtilityBar isMobile={isMobile} />
       <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: isMobile ? '10px var(--sr-gutter)' : '14px var(--sr-gutter)' }}>
-        <a href="/" onClick={() => go(() => onNavigate('home'))} style={{ textDecoration: 'none', cursor: 'pointer' }}>
+        <a href="/" style={{ textDecoration: 'none', cursor: 'pointer' }}>
           <Logo size={isMobile ? 50 : 80} labelSize={isMobile ? 21 : 32} />
         </a>
         {isMobile ? (
-          <button onClick={() => setMenuOpen(o => !o)} aria-label={menuOpen ? 'Close menu' : 'Open menu'} aria-expanded={menuOpen}
+          <button onClick={() => setMenuOpen((o) => !o)} aria-label={menuOpen ? 'Close menu' : 'Open menu'} aria-expanded={menuOpen}
             style={{ all: 'unset', cursor: 'pointer', width: 44, height: 44, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 5 }}>
             <span style={{ width: 26, height: 2, background: '#fff', transition: 'transform var(--sr-dur-fast), opacity var(--sr-dur-fast)', transform: menuOpen ? 'translateY(7px) rotate(45deg)' : 'none' }} />
             <span style={{ width: 26, height: 2, background: '#fff', transition: 'opacity var(--sr-dur-fast)', opacity: menuOpen ? 0 : 1 }} />
@@ -76,11 +78,10 @@ function Header({ route, onNavigate }) {
           </button>
         ) : (
           <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(18px,2.4vw,38px)' }}>
-            {navItems.map(([label, fn, href]) => (
-              <a key={label} href={href} onClick={(e) => { e.preventDefault(); fn(); }}
-                style={{ ...link, opacity: label === 'Services' && route.indexOf('service') === 0 ? 1 : .9 }}>{label}</a>
+            {NAV_ITEMS.map(([label, href]) => (
+              <a key={label} href={href} style={{ ...link, opacity: label === 'Services' && active === 'service' ? 1 : .9 }}>{label}</a>
             ))}
-            <a href="/#quote" onClick={(e) => { e.preventDefault(); onNavigate('quote'); }} style={{
+            <a href="/#quote" style={{
               ...link, background: 'var(--sr-red)', fontWeight: 600, letterSpacing: 'var(--sr-tracking-button)',
               padding: '14px 26px', opacity: 1,
             }}>Free Quote</a>
@@ -93,15 +94,15 @@ function Header({ route, onNavigate }) {
           padding: '6px var(--sr-gutter) 22px', display: 'flex', flexDirection: 'column',
           boxShadow: '0 24px 40px -20px rgba(0,0,0,0.6)',
         }}>
-          {navItems.map(([label, fn]) => (
-            <a key={label} href="#" onClick={(e) => { e.preventDefault(); go(fn); }}
+          {NAV_ITEMS.map(([label, href]) => (
+            <a key={label} href={href} onClick={() => setMenuOpen(false)}
               style={{ ...link, opacity: 1, fontSize: 15, padding: '16px 0', borderBottom: '1px solid rgba(255,255,255,0.12)' }}>{label}</a>
           ))}
-          <a href="/#quote" onClick={(e) => { e.preventDefault(); go(() => onNavigate('quote')); }} style={{
+          <a href="/#quote" onClick={() => setMenuOpen(false)} style={{
             ...link, background: 'var(--sr-red)', fontWeight: 600, letterSpacing: 'var(--sr-tracking-button)',
             textAlign: 'center', padding: '15px 26px', opacity: 1, marginTop: 18,
           }}>Free Quote</a>
-          <a href="tel:7866227663" style={{
+          <a href="tel:7866227663" onClick={() => setMenuOpen(false)} style={{
             ...link, textAlign: 'center', padding: '14px 26px', opacity: .95, marginTop: 10,
             border: '1px solid rgba(255,255,255,0.35)',
           }}>Call 786-622-ROOF</a>
@@ -111,7 +112,7 @@ function Header({ route, onNavigate }) {
   );
 }
 
-function Marquee() {
+export function Marquee() {
   const items = ['Roofing', 'Plumbing', 'Mechanical / HVAC', 'General Construction', 'Windows & Doors', 'Remodels'];
   const run = [...items, ...items];
   return (
@@ -121,20 +122,20 @@ function Marquee() {
     }}>
       <div style={{ display: 'inline-flex', alignItems: 'center', animation: 'srMarquee 32s linear infinite' }}>
         {run.map((label, i) => (
-          <React.Fragment key={i}>
+          <span key={i} style={{ display: 'inline-flex', alignItems: 'center' }}>
             <span style={{
               fontFamily: T.display, fontWeight: 600, fontSize: 18, letterSpacing: 'var(--sr-tracking-meta)',
               textTransform: 'uppercase', padding: '0 28px',
             }}>{label}</span>
             <span style={{ color: 'var(--sr-red)' }}>&#9670;</span>
-          </React.Fragment>
+          </span>
         ))}
       </div>
     </div>
   );
 }
 
-function Footer({ onNavigate }) {
+export function Footer() {
   const col = { display: 'flex', flexDirection: 'column', gap: 12 };
   const item = { fontFamily: T.body, fontSize: 14, color: '#a29f97', textDecoration: 'none', cursor: 'pointer' };
   return (
@@ -154,7 +155,7 @@ function Footer({ onNavigate }) {
           <div style={col}>
             <span style={{ fontFamily: T.body, fontSize: 11.5, fontWeight: 600, letterSpacing: 'var(--sr-tracking-meta)', textTransform: 'uppercase', color: '#fff' }}>Services</span>
             {[['Roofing', 'roofing'], ['Plumbing', 'plumbing'], ['Mechanical & HVAC', 'hvac'], ['General Construction', 'general'], ['Impact Windows & Doors', 'windows'], ['Remodels', 'remodels']].map(([s, t]) => (
-              <a key={t} href={SR_URL('service:' + t)} onClick={() => onNavigate('service:' + t)} style={item}>{s}</a>
+              <a key={t} href={SR_URL('service:' + t)} style={item}>{s}</a>
             ))}
           </div>
           <div style={col}>
@@ -171,11 +172,9 @@ function Footer({ onNavigate }) {
         flexWrap: 'wrap', gap: 12, fontFamily: T.body, fontSize: 11.5, letterSpacing: '0.1em',
         textTransform: 'uppercase', color: '#7f7d75',
       }}>
-        <span>&copy; {new Date().getFullYear()} Stable Rock Construction LLC</span>
+        <span>&copy; 2026 Stable Rock Construction LLC</span>
         <span>Veteran-Owned &middot; Built Rock Solid.</span>
       </div>
     </footer>
   );
 }
-
-window.SRKit = Object.assign(window.SRKit || {}, { Header, Footer, Marquee, Logo, UtilityBar });

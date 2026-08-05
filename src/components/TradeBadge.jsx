@@ -101,7 +101,7 @@ const LABELS = {
   remodels: 'Remodels',
 };
 
-function TradeBadge({ trade = 'roofing', tone = 'light', size = 82, accent = 'var(--sr-red)', style, ...rest }) {
+export default function TradeBadge({ trade = 'roofing', tone = 'light', size = 82, accent = 'var(--sr-red)', style, ...rest }) {
   const f = FRAME[tone] || FRAME.light;
   return (
     <svg viewBox="0 0 120 120" width={size} height={size} role="img" aria-label={LABELS[trade] || trade}
@@ -111,5 +111,3 @@ function TradeBadge({ trade = 'roofing', tone = 'light', size = 82, accent = 'va
     </svg>
   );
 }
-
-window.SRKit = Object.assign(window.SRKit || {}, { TradeBadge });

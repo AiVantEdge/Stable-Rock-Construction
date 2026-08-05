@@ -1,4 +1,10 @@
-/* Homepage recreation: hero, capability strip, positioning, services, advantage, work, bundles, FAQ, quote. */
+/* Homepage: hero, capability strip, positioning, services, advantage, work, bundles, FAQ, quote. */
+import { useState, useEffect, useRef } from 'react';
+import { Marquee } from './Chrome.jsx';
+import { useIsMobile, useIsTablet } from './hooks.js';
+import TradeBadge from './TradeBadge.jsx';
+import { SR_URL } from '../data/services.js';
+
 const SERVICES = [
   ['Roofing', 'Flat and low-slope, re-roofs, tear-offs, torch-down, metal, coatings, and repairs.', 'roofing', null, 'roofing-card.mp4'],
   ['Plumbing', 'Repairs, repipes, fixtures, and full rough-in for new builds and remodels.', 'plumbing', null, 'plumbing-card.mp4'],
@@ -7,7 +13,6 @@ const SERVICES = [
   ['Impact Windows & Doors', 'Rated to protect your home, cut energy bills, and often lower your insurance.', 'windows', null, 'windows-card.mp4'],
   ['Remodels', 'Full remodels handled by one team: plumbing, electrical, tile, and finishes.', 'remodels', null, 'remodels-card.mp4'],
 ];
-
 
 const FAQS = [
   ['What areas does Stable Rock serve?', 'We work across Miami and Miami-Dade County, the Florida Keys, and Southwest Florida. Roofing, plumbing, HVAC, general construction, impact windows, and remodels.'],
@@ -30,8 +35,8 @@ const bodyP = (color = 'var(--sr-muted)') => ({
   fontFamily: 'var(--sr-font-body)', fontSize: 'var(--sr-size-body)', lineHeight: 'var(--sr-leading-body)', color,
 });
 
-function Hero({ onNavigate }) {
-  const isMobile = window.SRKit.useIsMobile();
+function Hero() {
+  const isMobile = useIsMobile();
   const cta = {
     fontFamily: 'var(--sr-font-body)', fontSize: 'var(--sr-size-button)', fontWeight: 600,
     letterSpacing: 'var(--sr-tracking-button)', textTransform: 'uppercase', padding: 'var(--sr-button-pad)',
@@ -39,7 +44,7 @@ function Hero({ onNavigate }) {
   };
   return (
     <section style={{ position: 'relative', minHeight: '92vh', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
-      <img src="assets/imagery/hero-truck.webp" alt="Stable Rock Construction crew installing a metal roof on a Miami luxury home with the branded company truck in the driveway"
+      <img src="/assets/imagery/hero-truck.webp" alt="Stable Rock Construction crew installing a metal roof on a Miami luxury home with the branded company truck in the driveway"
         style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
       <div style={{ position: 'absolute', inset: 0, background: 'var(--sr-scrim-hero)' }}></div>
       <div style={{ position: 'relative', zIndex: 2, ...inner({ padding: isMobile ? '128px var(--sr-gutter) 56px' : 'clamp(170px,22vh,230px) var(--sr-gutter) clamp(60px,8vh,96px)', width: '100%' }) }}>
@@ -54,11 +59,11 @@ function Hero({ onNavigate }) {
           your A/C, a full remodel. One company that does it right the first time, so it passes inspection and holds up down here.
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14 }}>
-          <a href="/#quote" onClick={() => onNavigate('quote')} style={{ ...cta, background: 'var(--sr-red)', color: '#fff' }}>Get a free quote &rarr;</a>
+          <a href="/#quote" style={{ ...cta, background: 'var(--sr-red)', color: '#fff' }}>Get a free quote &rarr;</a>
           <a href="tel:7866227663" style={{ ...cta, color: '#fff', border: '1px solid rgba(255,255,255,0.45)' }}>786-622-ROOF</a>
         </div>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px 26px', marginTop: 34, fontFamily: 'var(--sr-font-body)', fontSize: 12.5, fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#fff' }}>
-          {['Licensed & Insured', 'Veteran-Owned', 'State Inspector'].map(b => (
+          {['Licensed & Insured', 'Veteran-Owned', 'State Inspector'].map((b) => (
             <span key={b} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <span style={{ color: 'var(--sr-red-soft)' }}>&#10003;</span>{b}
             </span>
@@ -69,17 +74,15 @@ function Hero({ onNavigate }) {
   );
 }
 
-function ServiceCardTile({ i, title, description, trade, photo, video, onNavigate }) {
-  const { TradeBadge, useIsMobile } = window.SRKit;
+function ServiceCardTile({ i, title, description, trade, photo, video }) {
   const isMobile = useIsMobile();
-  const [hover, setHover] = React.useState(false);
-  const videoRef = React.useRef(null);
-  React.useEffect(() => {
+  const [hover, setHover] = useState(false);
+  const videoRef = useRef(null);
+  useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
     v.muted = true; // required for autoplay without a user gesture
     if (!isMobile) {
-      // Desktop: play on hover, reset to the first frame when the pointer leaves.
       if (hover) { v.currentTime = 0; v.play().catch(() => {}); }
       else { v.pause(); v.currentTime = 0; }
       return;
@@ -96,7 +99,7 @@ function ServiceCardTile({ i, title, description, trade, photo, video, onNavigat
     return () => io.disconnect();
   }, [hover, isMobile]);
   return (
-    <a href={SR_URL('service:' + trade)} onClick={() => onNavigate('service:' + trade)}
+    <a href={SR_URL('service:' + trade)}
       onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
       style={{
         display: 'block', background: hover ? 'var(--sr-white)' : 'var(--sr-panel)', padding: 'var(--sr-card-pad)', borderTop: 'var(--sr-rule-accent)', textDecoration: 'none', color: 'var(--sr-ink)', cursor: 'pointer',
@@ -105,11 +108,11 @@ function ServiceCardTile({ i, title, description, trade, photo, video, onNavigat
       {photo || video ? (
         <div style={{ position: 'relative', aspectRatio: '3/2', overflow: 'hidden', marginBottom: 20, background: 'var(--sr-stone)' }}>
           {photo ? (
-            <img src={'assets/imagery/' + photo} alt={title + ' on a South Florida home'}
+            <img src={'/assets/imagery/' + photo} alt={title + ' on a South Florida home'}
               style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: video && hover ? 0 : 1, transition: 'opacity var(--sr-dur-med)' }} />
           ) : null}
           {video ? (
-            <video ref={videoRef} src={'assets/imagery/' + video} muted loop playsInline preload="auto"
+            <video ref={videoRef} src={'/assets/imagery/' + video} muted loop playsInline preload="auto"
               aria-label={title + ' on a South Florida home'}
               style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
           ) : null}
@@ -119,10 +122,10 @@ function ServiceCardTile({ i, title, description, trade, photo, video, onNavigat
         <div style={{ marginBottom: 20 }}><TradeBadge trade={trade} size={82} /></div>
       )}
       <div>
-      <span style={{ fontFamily: 'var(--sr-font-serif)', fontWeight: 600, fontSize: 15, color: 'var(--sr-red)' }}>{String(i).padStart(2, '0')}</span>
-      <h3 style={{ fontFamily: 'var(--sr-font-display)', fontWeight: 600, textTransform: 'uppercase', fontSize: 'var(--sr-size-h3)', margin: '12px 0' }}>{title}</h3>
-      <p style={{ ...bodyP(), fontSize: 'var(--sr-size-body-sm)', lineHeight: 'var(--sr-leading-tight)', margin: '0 0 16px' }}>{description}</p>
-      <span style={{ fontFamily: 'var(--sr-font-body)', fontSize: 'var(--sr-size-label)', fontWeight: 600, letterSpacing: 'var(--sr-tracking-button)', textTransform: 'uppercase', color: 'var(--sr-red)' }}>Learn more &rarr;</span>
+        <span style={{ fontFamily: 'var(--sr-font-serif)', fontWeight: 600, fontSize: 15, color: 'var(--sr-red)' }}>{String(i).padStart(2, '0')}</span>
+        <h3 style={{ fontFamily: 'var(--sr-font-display)', fontWeight: 600, textTransform: 'uppercase', fontSize: 'var(--sr-size-h3)', margin: '12px 0' }}>{title}</h3>
+        <p style={{ ...bodyP(), fontSize: 'var(--sr-size-body-sm)', lineHeight: 'var(--sr-leading-tight)', margin: '0 0 16px' }}>{description}</p>
+        <span style={{ fontFamily: 'var(--sr-font-body)', fontSize: 'var(--sr-size-label)', fontWeight: 600, letterSpacing: 'var(--sr-tracking-button)', textTransform: 'uppercase', color: 'var(--sr-red)' }}>Learn more &rarr;</span>
       </div>
     </a>
   );
@@ -145,9 +148,9 @@ function FAQRow({ q, a, open, onToggle }) {
 }
 
 function QuoteBlock() {
-  const isMobile = window.SRKit.useIsMobile();
-  const [sent, setSent] = React.useState(false);
-  const [picked, setPicked] = React.useState(['Roofing']);
+  const isMobile = useIsMobile();
+  const [sent, setSent] = useState(false);
+  const [picked, setPicked] = useState(['Roofing']);
   const label = { fontFamily: 'var(--sr-font-body)', fontSize: 11.5, fontWeight: 600, letterSpacing: 'var(--sr-tracking-meta)', textTransform: 'uppercase', color: 'var(--sr-ink)', display: 'flex', flexDirection: 'column', gap: 7 };
   const input = { fontFamily: 'var(--sr-font-body)', fontSize: 15, padding: '13px 14px', border: '1px solid var(--sr-line)', background: '#fff', color: 'var(--sr-ink)', borderRadius: 0 };
   const chips = ['Roofing', 'Plumbing', 'Mechanical / HVAC', 'General Construction', 'Windows & Doors', 'Kitchen Remodel', 'Bathroom Remodel', 'Other'];
@@ -192,11 +195,11 @@ function QuoteBlock() {
               <div>
                 <span style={{ ...label, marginBottom: 12 }}>What do you need? (select all)</span>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 9 }}>
-                  {chips.map(c => {
+                  {chips.map((c) => {
                     const on = picked.includes(c);
                     return (
                       <button key={c} type="button"
-                        onClick={() => setPicked(on ? picked.filter(p => p !== c) : [...picked, c])}
+                        onClick={() => setPicked(on ? picked.filter((p) => p !== c) : [...picked, c])}
                         style={{
                           fontFamily: 'var(--sr-font-body)', fontWeight: 500, fontSize: 13, padding: '9px 16px',
                           border: '1px solid ' + (on ? 'var(--sr-red)' : 'var(--sr-line)'),
@@ -221,14 +224,13 @@ function QuoteBlock() {
   );
 }
 
-function HomeScreen({ onNavigate }) {
-  const [openFaq, setOpenFaq] = React.useState(0);
-  const { Marquee, useIsMobile, useIsTablet } = window.SRKit;
+export default function HomeScreen() {
+  const [openFaq, setOpenFaq] = useState(0);
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
   return (
     <div>
-      <Hero onNavigate={onNavigate} />
+      <Hero />
       <Marquee />
 
       <section style={section()}>
@@ -249,7 +251,7 @@ function HomeScreen({ onNavigate }) {
             <div style={{ borderTop: 'var(--sr-rule-hairline)' }}>
               {['One licensed company for roofing, plumbing, HVAC, windows, and remodels',
                 'One person you call, from the first walkthrough to the final inspection',
-                'Owned and run by an active Florida State inspector'].map(t => (
+                'Owned and run by an active Florida State inspector'].map((t) => (
                 <div key={t} style={{ display: 'flex', gap: 14, alignItems: 'flex-start', padding: '16px 0', borderBottom: 'var(--sr-rule-hairline)' }}>
                   <span style={{ color: 'var(--sr-red)', fontSize: 15 }}>&#10003;</span>
                   <span style={{ fontFamily: 'var(--sr-font-body)', fontSize: 15.5, lineHeight: 1.6, color: 'var(--sr-ink)' }}>{t}</span>
@@ -260,7 +262,7 @@ function HomeScreen({ onNavigate }) {
         </div>
       </section>
 
-      <section style={section({ background: 'var(--sr-panel)', borderTop: 'var(--sr-rule-hairline)' })}>
+      <section id="services" style={section({ background: 'var(--sr-panel)', borderTop: 'var(--sr-rule-hairline)' })}>
         <div style={inner()}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 24, marginBottom: 'clamp(40px,5vw,64px)' }}>
             <div>
@@ -269,12 +271,12 @@ function HomeScreen({ onNavigate }) {
             </div>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : isTablet ? 'repeat(2,1fr)' : 'repeat(3,1fr)', gap: 1, background: 'var(--sr-line)', border: '1px solid var(--sr-line)' }}>
-            {SERVICES.map(([t, d, tr, ph, vid], i) => <ServiceCardTile key={t} i={i + 1} title={t} description={d} trade={tr} photo={ph} video={vid} onNavigate={onNavigate} />)}
+            {SERVICES.map(([t, d, tr, ph, vid], i) => <ServiceCardTile key={t} i={i + 1} title={t} description={d} trade={tr} photo={ph} video={vid} />)}
           </div>
         </div>
       </section>
 
-      <section style={section({ background: 'var(--sr-charcoal)', color: '#fff' })}>
+      <section id="advantage" style={section({ background: 'var(--sr-charcoal)', color: '#fff' })}>
         <div style={inner({ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 'clamp(40px,6vw,80px)', alignItems: 'center' })}>
           <div>
             <p style={eyebrow('var(--sr-red-soft)')}>The Stable Rock Advantage</p>
@@ -302,11 +304,11 @@ function HomeScreen({ onNavigate }) {
               <span style={{ fontFamily: 'var(--sr-font-display)', fontWeight: 600, textTransform: 'uppercase', fontSize: 20, letterSpacing: '0.04em' }}>Inspection Record</span>
               <span style={{ fontFamily: 'var(--sr-font-body)', fontSize: 11.5, letterSpacing: 'var(--sr-tracking-meta)', textTransform: 'uppercase', color: 'var(--sr-muted)' }}>Miami-Dade County</span>
             </div>
-            {[['Deck &amp; fastening', 'Pass'], ['Underlayment', 'Pass'], ['Flashing &amp; terminations', 'Pass'], ['Tie-ins &amp; penetrations', 'Pass'], ['Final walkthrough', 'Pass']].map(([item, res]) => (
+            {[['Deck & fastening', 'Pass'], ['Underlayment', 'Pass'], ['Flashing & terminations', 'Pass'], ['Tie-ins & penetrations', 'Pass'], ['Final walkthrough', 'Pass']].map(([item, res]) => (
               <div key={item} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 16, padding: '15px 0', borderBottom: 'var(--sr-rule-hairline)' }}>
                 <span style={{ display: 'flex', alignItems: 'center', gap: 12, fontFamily: 'var(--sr-font-body)', fontSize: 15.5, color: 'var(--sr-ink)' }}>
                   <span style={{ color: 'var(--sr-red)' }}>&#10003;</span>
-                  <span dangerouslySetInnerHTML={{ __html: item }} />
+                  <span>{item}</span>
                 </span>
                 <span style={{ fontFamily: 'var(--sr-font-body)', fontSize: 11.5, fontWeight: 600, letterSpacing: 'var(--sr-tracking-meta)', textTransform: 'uppercase', color: 'var(--sr-red)' }}>{res}</span>
               </div>
@@ -326,7 +328,7 @@ function HomeScreen({ onNavigate }) {
         <div style={inner({ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'minmax(280px,380px) 1fr', gap: 'clamp(32px,5vw,72px)', alignItems: 'center' })}>
           <div style={{ position: 'relative', background: '#000', borderTop: 'var(--sr-rule-accent)', width: '100%', maxWidth: isMobile ? 320 : 'none', margin: isMobile ? '0 auto' : 0 }}>
             <video
-              src="assets/video/abner-inspector.mp4"
+              src="/assets/video/abner-inspector.mp4"
               controls
               playsInline
               preload="metadata"
@@ -348,7 +350,7 @@ function HomeScreen({ onNavigate }) {
         </div>
       </section>
 
-      <section style={section({ background: 'var(--sr-stone)' })}>
+      <section id="bundles" style={section({ background: 'var(--sr-stone)' })}>
         <div style={inner({ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '0.9fr 1.1fr', gap: 'clamp(40px,6vw,96px)', alignItems: 'center' })}>
           <div>
             <p style={eyebrow()}>Do It All At Once</p>
@@ -378,7 +380,7 @@ function HomeScreen({ onNavigate }) {
         </div>
       </section>
 
-      <section style={section()}>
+      <section id="faq" style={section()}>
         <div style={inner({ maxWidth: 940 })}>
           <div style={{ textAlign: 'center', marginBottom: 'clamp(40px,5vw,60px)' }}>
             <p style={eyebrow()}>Common Questions</p>
@@ -396,5 +398,3 @@ function HomeScreen({ onNavigate }) {
     </div>
   );
 }
-
-window.SRKit = Object.assign(window.SRKit || {}, { HomeScreen });
