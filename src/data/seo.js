@@ -7,6 +7,10 @@ export const SITE = 'https://stablerockconstruction.com';
 export const BUSINESS_ID = SITE + '/#business';
 export const OG_IMAGE = SITE + '/assets/imagery/hero-truck.webp';
 
+/* Measurement — fill these in to activate (both are inert while empty). */
+export const GA_MEASUREMENT_ID = ''; // e.g. 'G-XXXXXXXXXX' from a GA4 property
+export const GSC_VERIFICATION = ''; // content value of the Search Console meta tag
+
 const AREA_SERVED = [
   { '@type': 'AdministrativeArea', name: 'Miami' },
   { '@type': 'AdministrativeArea', name: 'Miami-Dade County' },
@@ -53,7 +57,8 @@ export const businessNode = {
   image: OG_IMAGE,
   logo: SITE + '/assets/logo/stable-rock-logo-white-bg.png',
   priceRange: '$$',
-  address: { '@type': 'PostalAddress', streetAddress: '3110 NW 4th St', addressLocality: 'Miami', addressRegion: 'FL', postalCode: '33125', addressCountry: 'US' },
+  // Service-area business: city/region only, no public street address.
+  address: { '@type': 'PostalAddress', addressLocality: 'Miami', addressRegion: 'FL', addressCountry: 'US' },
   areaServed: AREA_SERVED,
   founder: { '@id': FOUNDER_ID },
   hasCredential: CREDENTIALS,

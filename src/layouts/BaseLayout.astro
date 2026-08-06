@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
 import { Header, Footer } from '../components/Chrome.jsx';
-import { SITE, OG_IMAGE } from '../data/seo.js';
+import { SITE, OG_IMAGE, GA_MEASUREMENT_ID, GSC_VERIFICATION } from '../data/seo.js';
 
 const {
   title,
@@ -44,6 +44,19 @@ const fontsHref = 'https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;
   <link rel="stylesheet" href={fontsHref} />
 
   {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+
+  {GSC_VERIFICATION && <meta name="google-site-verification" content={GSC_VERIFICATION} />}
+  {GA_MEASUREMENT_ID && (
+    <>
+      <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
+      <script is:inline define:vars={{ GA_MEASUREMENT_ID }}>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){ dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', GA_MEASUREMENT_ID);
+      </script>
+    </>
+  )}
 </head>
 <body>
   <Header client:load active={active} />
