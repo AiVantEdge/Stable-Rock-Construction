@@ -10,19 +10,27 @@ const {
   active = 'home',
   schema = null,
   ogImage = OG_IMAGE,
+  lang = 'en',
 } = Astro.props;
 
-const canonical = SITE + path;
+// `path` is always the English canonical path; the Spanish equivalent lives under /es.
+const esPath = path === '/' ? '/es' : '/es' + path;
+const enUrl = SITE + path;
+const esUrl = SITE + esPath;
+const canonical = lang === 'es' ? esUrl : enUrl;
 const fontsHref = 'https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Archivo:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap';
 ---
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{title}</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={canonical} />
+  <link rel="alternate" hreflang="en" href={enUrl} />
+  <link rel="alternate" hreflang="es" href={esUrl} />
+  <link rel="alternate" hreflang="x-default" href={enUrl} />
   <meta name="robots" content="index,follow,max-image-preview:large" />
 
   <meta property="og:type" content="website" />
@@ -59,8 +67,8 @@ const fontsHref = 'https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;
   )}
 </head>
 <body>
-  <Header client:load active={active} />
+  <Header client:load active={active} lang={lang} path={path} />
   <slot />
-  <Footer />
+  <Footer lang={lang} />
 </body>
 </html>

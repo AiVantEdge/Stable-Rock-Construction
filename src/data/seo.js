@@ -2,6 +2,11 @@
    (LocalBusiness + Service + Breadcrumb + FAQ). Phase 2 will extend this with
    Person (owner/inspector), aggregateRating, and sameAs profiles. */
 import { SERVICE_CONTENT, SR_SLUG } from './services.js';
+import { SERVICE_CONTENT_ES } from '../i18n/services.es.js';
+import { HOME } from '../i18n/home.js';
+import { localizedPath } from '../i18n/ui.js';
+
+const CRUMB = { en: { home: 'Home', services: 'Services', areas: 'Service Areas', guides: 'Guides' }, es: { home: 'Inicio', services: 'Servicios', areas: 'Áreas de Servicio', guides: 'Guías' } };
 
 export const SITE = 'https://stablerockconstruction.com';
 export const BUSINESS_ID = SITE + '/#business';
@@ -104,6 +109,21 @@ export const PAGE_META = {
   },
 };
 
+/* Spanish page metadata (same paths; the /es prefix is applied at render). */
+export const PAGE_META_ES = {
+  home: { path: '/', title: 'Stable Rock Construction | Techos, Plomería y A/C en Miami y los Cayos', description: 'Constructor del sur de Florida, empresa de veteranos dirigida por un inspector activo del Estado de Florida. Techos, plomería, A/C, ventanas de impacto y remodelaciones bajo una sola licencia. Cotizaciones gratis: 786-622-ROOF.' },
+  roofing: { path: '/roofing', title: 'Techos en Miami y los Cayos de Florida | Stable Rock Construction', description: 'Techos planos y de baja pendiente, retechos, remociones, torch-down, metal y recubrimientos en Miami-Dade, los Cayos y el suroeste de Florida. Inspección de techo gratis.' },
+  plumbing: { path: '/plumbing', title: 'Plomería y Recambio de Tubería en Miami | Stable Rock Construction', description: 'Recambios completos de tubería, detección de fugas en losa, limpieza de drenajes, calentadores y rough-in en Miami-Dade, los Cayos y el suroeste de Florida.' },
+  hvac: { path: '/mechanical-hvac', title: 'Instalación de A/C y HVAC en Miami | Stable Rock Construction', description: 'Instalación y reemplazo de A/C dimensionado por cálculo de carga, sellado y reemplazo de ductos, y mini-splits en todo el sur de Florida.' },
+  general: { path: '/general-construction', title: 'Contratista General en Miami | Ampliaciones y Obra Nueva | Stable Rock', description: 'Construcción residencial desde cero, ampliaciones, reparación estructural y gestión de permisos en Miami-Dade, los Cayos y el suroeste de Florida.' },
+  windows: { path: '/impact-windows-doors', title: 'Ventanas y Puertas de Impacto en Miami | Stable Rock Construction', description: 'Ventanas y puertas de impacto conformes a NOA, instalación de marco completo y retrofit, con papeleo de mitigación de viento para su crédito de seguro.' },
+  remodels: { path: '/remodels', title: 'Remodelación de Cocinas y Baños en Miami | Stable Rock Construction', description: 'Remodelaciones completas de cocina y baño con plomería, electricidad, baldosa y acabados internos. Un equipo, un cronograma, una factura.' },
+};
+
+export function getMeta(key, lang = 'en') {
+  return (lang === 'es' ? PAGE_META_ES : PAGE_META)[key];
+}
+
 const HOME_FAQS = [
   ['What areas does Stable Rock serve?', 'We work across Miami and Miami-Dade County, the Florida Keys, and Southwest Florida. Roofing, plumbing, HVAC, general construction, impact windows, and remodels.'],
   ['Can one contractor really handle roofing, plumbing, HVAC, and remodels?', 'Yes. Every trade is in-house under one license, so we run your whole project and you deal with one point of contact instead of coordinating a pile of subcontractors.'],
@@ -111,8 +131,9 @@ const HOME_FAQS = [
   ['How do I get a free quote?', "Call 786-622-ROOF (786-622-7663) or fill out the form. We'll get back to you within one business day with a free estimate. No pressure."],
 ];
 
-/* Home page graph: business + website + FAQ. */
-export function homeSchema() {
+/* Home page graph: business + website + FAQ (localized). */
+export function homeSchema(lang = 'en') {
+  const faqs = HOME[lang].faq.items;
   return {
     '@context': 'https://schema.org',
     '@graph': [
@@ -121,15 +142,16 @@ export function homeSchema() {
       { '@type': 'WebSite', '@id': SITE + '/#website', url: SITE, name: 'Stable Rock Construction LLC', publisher: { '@id': BUSINESS_ID } },
       {
         '@type': 'FAQPage',
-        mainEntity: HOME_FAQS.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+        mainEntity: faqs.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
       },
     ],
   };
 }
 
 /* Blog post graph: business + BlogPosting (authored by the owner) + breadcrumb. */
-export function blogPostSchema({ title, description, slug, datePublished, dateModified, author }) {
-  const url = `${SITE}/blog/${slug}`;
+export function blogPostSchema({ title, description, slug, datePublished, dateModified, author, lang = 'en' }) {
+  const cr = CRUMB[lang];
+  const url = SITE + localizedPath(`/blog/${slug}`, lang);
   return {
     '@context': 'https://schema.org',
     '@graph': [
@@ -138,6 +160,7 @@ export function blogPostSchema({ title, description, slug, datePublished, dateMo
         '@type': 'BlogPosting',
         headline: title,
         description,
+        inLanguage: lang,
         datePublished,
         dateModified: dateModified || datePublished,
         author: { '@type': 'Person', '@id': FOUNDER_ID, name: author },
@@ -149,8 +172,8 @@ export function blogPostSchema({ title, description, slug, datePublished, dateMo
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: SITE + '/' },
-          { '@type': 'ListItem', position: 2, name: 'Guides', item: SITE + '/blog' },
+          { '@type': 'ListItem', position: 1, name: cr.home, item: SITE + localizedPath('/', lang) },
+          { '@type': 'ListItem', position: 2, name: cr.guides, item: SITE + localizedPath('/blog', lang) },
           { '@type': 'ListItem', position: 3, name: title, item: url },
         ],
       },
@@ -158,18 +181,28 @@ export function blogPostSchema({ title, description, slug, datePublished, dateMo
   };
 }
 
-/* Per-city landing page title + meta description. */
-export function cityMeta(city) {
+/* Per-city landing page title + meta description (localized). */
+export function cityMeta(city, lang = 'en') {
+  const path = `/service-areas/${city.slug}`;
+  if (lang === 'es') {
+    return {
+      path,
+      title: `Contratista en ${city.name} — Techos y Construcción | Stable Rock Construction`,
+      description: `Techos, plomería, A/C, ventanas de impacto y remodelaciones en ${city.name}. Empresa de veteranos, certificada por el Estado de Florida, una sola empresa para cada oficio. Cotizaciones gratis: 786-622-ROOF.`,
+    };
+  }
   return {
-    path: `/service-areas/${city.slug}`,
+    path,
     title: `${city.name} Roofing & General Contractor | Stable Rock Construction`,
     description: `Licensed, veteran-owned roofing, plumbing, HVAC, impact windows, and remodels in ${city.name}, ${city.region}. Florida state-certified, one company for every trade. Free quotes: 786-622-ROOF.`,
   };
 }
 
-/* City page graph: business + founder + breadcrumb. */
-export function citySchema(city) {
-  const url = SITE + `/service-areas/${city.slug}`;
+/* City page graph: business + founder + breadcrumb (localized). */
+export function citySchema(city, lang = 'en') {
+  const cr = CRUMB[lang];
+  const path = `/service-areas/${city.slug}`;
+  const url = SITE + localizedPath(path, lang);
   return {
     '@context': 'https://schema.org',
     '@graph': [
@@ -178,8 +211,8 @@ export function citySchema(city) {
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: SITE + '/' },
-          { '@type': 'ListItem', position: 2, name: 'Service Areas', item: SITE + '/service-areas' },
+          { '@type': 'ListItem', position: 1, name: cr.home, item: SITE + localizedPath('/', lang) },
+          { '@type': 'ListItem', position: 2, name: cr.areas, item: SITE + localizedPath('/service-areas', lang) },
           { '@type': 'ListItem', position: 3, name: city.name, item: url },
         ],
       },
@@ -187,11 +220,13 @@ export function citySchema(city) {
   };
 }
 
-/* Service page graph: business + Service (offer catalog from scope) + breadcrumb. */
-export function serviceSchema(trade) {
-  const c = SERVICE_CONTENT[trade];
-  const meta = PAGE_META[trade];
-  const url = SITE + meta.path;
+/* Service page graph: business + Service (offer catalog from scope) + breadcrumb (localized). */
+export function serviceSchema(trade, lang = 'en') {
+  const content = lang === 'es' ? SERVICE_CONTENT_ES : SERVICE_CONTENT;
+  const c = content[trade];
+  const meta = getMeta(trade, lang);
+  const cr = CRUMB[lang];
+  const url = SITE + localizedPath(meta.path, lang);
   return {
     '@context': 'https://schema.org',
     '@graph': [
@@ -205,6 +240,7 @@ export function serviceSchema(trade) {
         url,
         provider: { '@id': BUSINESS_ID },
         areaServed: AREA_SERVED,
+        inLanguage: lang,
         hasOfferCatalog: {
           '@type': 'OfferCatalog',
           name: c.label,
@@ -214,8 +250,8 @@ export function serviceSchema(trade) {
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: SITE + '/' },
-          { '@type': 'ListItem', position: 2, name: 'Services', item: url },
+          { '@type': 'ListItem', position: 1, name: cr.home, item: SITE + localizedPath('/', lang) },
+          { '@type': 'ListItem', position: 2, name: cr.services, item: url },
           { '@type': 'ListItem', position: 3, name: c.crumb, item: url },
         ],
       },

@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ServiceScreen from '../../components/ServiceScreen.jsx';
+import { getMeta, serviceSchema } from '../../data/seo.js';
+import { SR_SLUG } from '../../data/services.js';
+
+export function getStaticPaths() {
+  return Object.entries(SR_SLUG).map(([trade, slug]) => ({ params: { service: slug }, props: { trade } }));
+}
+
+const { trade } = Astro.props;
+const m = getMeta(trade, 'es');
+---
+<BaseLayout title={m.title} description={m.description} path={m.path} active="service" lang="es" schema={serviceSchema(trade, 'es')}>
+  <ServiceScreen trade={trade} lang="es" client:load />
+</BaseLayout>

@@ -10,8 +10,18 @@ export default defineConfig({
     // Emit /roofing.html as /roofing/index.html so clean URLs work on Vercel.
     format: 'directory',
   },
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'es'],
+    routing: { prefixDefaultLocale: false }, // English at root, Spanish under /es
+  },
   integrations: [
     react(),
-    sitemap(),
+    sitemap({
+      i18n: {
+        defaultLocale: 'en',
+        locales: { en: 'en-US', es: 'es-US' },
+      },
+    }),
   ],
 });

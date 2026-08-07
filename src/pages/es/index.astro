@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HomeScreen from '../../components/HomeScreen.jsx';
+import { getMeta, homeSchema } from '../../data/seo.js';
+
+const m = getMeta('home', 'es');
+---
+<BaseLayout title={m.title} description={m.description} path={m.path} active="home" lang="es" schema={homeSchema('es')}>
+  <HomeScreen client:load lang="es" />
+</BaseLayout>

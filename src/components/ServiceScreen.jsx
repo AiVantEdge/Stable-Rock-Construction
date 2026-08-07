@@ -1,13 +1,18 @@
-/* Service page template, one entry per trade. Same layout, per-trade copy. */
+/* Service page template, one entry per trade. Same layout, per-trade copy, bilingual. */
 import { useIsMobile, useIsTablet } from './hooks.js';
 import TradeBadge from './TradeBadge.jsx';
 import BeforeAfter from './BeforeAfter.jsx';
 import { SERVICE_CONTENT, SR_URL } from '../data/services.js';
+import { SERVICE_CONTENT_ES } from '../i18n/services.es.js';
+import { UI, localizedPath } from '../i18n/ui.js';
 
-export default function ServiceScreen({ trade = 'roofing' }) {
+export default function ServiceScreen({ trade = 'roofing', lang = 'en' }) {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
-  const c = SERVICE_CONTENT[trade] || SERVICE_CONTENT.roofing;
+  const content = lang === 'es' ? SERVICE_CONTENT_ES : SERVICE_CONTENT;
+  const c = content[trade] || content.roofing;
+  const t = UI[lang];
+  const L = (p) => localizedPath(p, lang);
   const eyebrow = (color) => ({
     fontFamily: 'var(--sr-font-body)', fontSize: 'var(--sr-size-label)', fontWeight: 600,
     letterSpacing: 'var(--sr-tracking-eyebrow)', textTransform: 'uppercase', color: color || 'var(--sr-red)', margin: '0 0 22px',
@@ -35,7 +40,7 @@ export default function ServiceScreen({ trade = 'roofing' }) {
         }}>
           <div>
             <p style={{ fontFamily: 'var(--sr-font-body)', fontSize: 11.5, letterSpacing: 'var(--sr-tracking-meta)', textTransform: 'uppercase', color: 'rgba(255,255,255,0.65)', margin: '0 0 18px' }}>
-              <a href="/" style={crumbLink}>Home</a> / Services / {c.crumb}
+              <a href={L('/')} style={crumbLink}>{t.common.home}</a> / {t.service.crumbServices} / {c.crumb}
             </p>
             <h1 style={{ fontFamily: 'var(--sr-font-display)', fontWeight: 700, textTransform: 'uppercase', fontSize: 'clamp(38px,5.4vw,74px)', lineHeight: 1, color: '#fff', margin: 0 }}>
               {c.h1[0]}<br />{c.h1[1]}
@@ -57,7 +62,7 @@ export default function ServiceScreen({ trade = 'roofing' }) {
             ))}
           </div>
           <div style={{ background: 'var(--sr-panel)', border: 'var(--sr-rule-hairline)', borderTop: 'var(--sr-rule-accent)', padding: 32, alignSelf: 'start' }}>
-            <p style={{ ...eyebrow(), margin: '0 0 18px' }}>What We Handle</p>
+            <p style={{ ...eyebrow(), margin: '0 0 18px' }}>{t.service.whatWeHandle}</p>
             <div style={{ display: 'grid', gap: 12 }}>
               {c.scope.map((s) => (
                 <span key={s} style={{ display: 'flex', gap: 10, fontFamily: 'var(--sr-font-body)', fontSize: 15, color: 'var(--sr-ink)' }}>
@@ -71,15 +76,15 @@ export default function ServiceScreen({ trade = 'roofing' }) {
 
       <section style={{ padding: 'var(--sr-section-y) var(--sr-gutter)', background: 'var(--sr-charcoal)', color: '#fff' }}>
         <div style={{ maxWidth: 'var(--sr-container)', margin: '0 auto' }}>
-          <p style={eyebrow('var(--sr-red-soft)')}>How It Goes</p>
+          <p style={eyebrow('var(--sr-red-soft)')}>{t.service.howItGoes}</p>
           <h2 style={{ fontFamily: 'var(--sr-font-display)', fontWeight: 700, textTransform: 'uppercase', fontSize: 'var(--sr-size-h2)', lineHeight: 'var(--sr-leading-display)', margin: '0 0 clamp(36px,5vw,56px)', maxWidth: '18ch' }}>
-            Four steps, no surprises.
+            {t.service.fourSteps}
           </h2>
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : isTablet ? 'repeat(2,1fr)' : 'repeat(4,1fr)', gap: 1, background: 'rgba(255,255,255,0.14)' }}>
-            {c.steps.map(([t, d], i) => (
-              <div key={t} style={{ background: 'var(--sr-charcoal)', padding: '30px 26px', borderTop: 'var(--sr-rule-accent)' }}>
+            {c.steps.map(([st, d], i) => (
+              <div key={st} style={{ background: 'var(--sr-charcoal)', padding: '30px 26px', borderTop: 'var(--sr-rule-accent)' }}>
                 <span style={{ fontFamily: 'var(--sr-font-serif)', fontWeight: 600, fontSize: 17, color: 'var(--sr-red-soft)' }}>{String(i + 1).padStart(2, '0')}</span>
-                <h3 style={{ fontFamily: 'var(--sr-font-display)', fontWeight: 600, textTransform: 'uppercase', fontSize: 19, margin: '10px 0' }}>{t}</h3>
+                <h3 style={{ fontFamily: 'var(--sr-font-display)', fontWeight: 600, textTransform: 'uppercase', fontSize: 19, margin: '10px 0' }}>{st}</h3>
                 <p style={{ fontFamily: 'var(--sr-font-body)', fontSize: 14.5, lineHeight: 1.7, color: 'var(--sr-muted-dark)', margin: 0 }}>{d}</p>
               </div>
             ))}
@@ -91,7 +96,7 @@ export default function ServiceScreen({ trade = 'roofing' }) {
         <section style={{ padding: 'var(--sr-section-y) var(--sr-gutter)', background: 'var(--sr-panel)', borderTop: 'var(--sr-rule-hairline)' }}>
           <div style={{ maxWidth: 'var(--sr-container)', margin: '0 auto', display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '0.85fr 1.15fr', gap: 'clamp(36px,5vw,72px)', alignItems: 'center' }}>
             <div>
-              <p style={eyebrow()}>Before &amp; After</p>
+              <p style={eyebrow()}>{t.service.beforeAfter}</p>
               <h2 style={{ fontFamily: 'var(--sr-font-display)', fontWeight: 700, textTransform: 'uppercase', fontSize: 'clamp(26px,3.2vw,42px)', lineHeight: 1.06, margin: '0 0 22px' }}>
                 {c.beforeAfter.title}
               </h2>
@@ -136,11 +141,11 @@ export default function ServiceScreen({ trade = 'roofing' }) {
       {c.photos ? (
         <section style={{ padding: 'var(--sr-section-y) var(--sr-gutter)' }}>
           <div style={{ maxWidth: 'var(--sr-container)', margin: '0 auto', display: 'grid', gridTemplateColumns: isMobile ? '1fr' : isTablet ? 'repeat(2,1fr)' : 'repeat(3,1fr)', gap: 'var(--sr-grid-gap)' }}>
-            {c.photos.map(([f, t, m]) => (
+            {c.photos.map(([f, ti, m]) => (
               <figure key={f} style={{ position: 'relative', aspectRatio: '4/5', overflow: 'hidden', margin: 0 }}>
-                <img src={'/assets/imagery/' + f} alt={t + ' in ' + m} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img src={'/assets/imagery/' + f} alt={ti + ' in ' + m} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 <figcaption style={{ position: 'absolute', inset: 'auto 0 0 0', padding: 20, background: 'var(--sr-scrim-caption)', color: '#fff' }}>
-                  <span style={{ fontFamily: 'var(--sr-font-serif)', fontWeight: 600, fontSize: 20 }}>{t}</span><br />
+                  <span style={{ fontFamily: 'var(--sr-font-serif)', fontWeight: 600, fontSize: 20 }}>{ti}</span><br />
                   <span style={{ fontFamily: 'var(--sr-font-body)', fontSize: 'var(--sr-size-meta)', letterSpacing: 'var(--sr-tracking-meta)', textTransform: 'uppercase', color: '#d3d1cb' }}>{m}</span>
                 </figcaption>
               </figure>
@@ -152,9 +157,9 @@ export default function ServiceScreen({ trade = 'roofing' }) {
       {c.faqs ? (
         <section style={{ padding: 'var(--sr-section-y) var(--sr-gutter)', background: 'var(--sr-panel)', borderTop: 'var(--sr-rule-hairline)' }}>
           <div style={{ maxWidth: 940, margin: '0 auto' }}>
-            <p style={eyebrow()}>Common Questions</p>
+            <p style={eyebrow()}>{t.service.commonQuestions}</p>
             <h2 style={{ fontFamily: 'var(--sr-font-display)', fontWeight: 700, textTransform: 'uppercase', fontSize: 'clamp(26px,3.2vw,42px)', lineHeight: 1.06, margin: '0 0 clamp(28px,4vw,44px)' }}>
-              {c.label} questions, answered.
+              {t.service.questionsAnswered(c.label)}
             </h2>
             <div style={{ borderTop: 'var(--sr-rule-hairline)' }}>
               {c.faqs.map(([q, a]) => (
@@ -173,19 +178,19 @@ export default function ServiceScreen({ trade = 'roofing' }) {
 
       <section style={{ padding: 'var(--sr-section-y) var(--sr-gutter)' }}>
         <div style={{ maxWidth: 'var(--sr-container)', margin: '0 auto' }}>
-          <p style={eyebrow()}>Other Trades</p>
+          <p style={eyebrow()}>{t.service.otherTrades}</p>
           <h2 style={{ fontFamily: 'var(--sr-font-display)', fontWeight: 700, textTransform: 'uppercase', fontSize: 'clamp(24px,2.6vw,36px)', margin: '0 0 32px' }}>
-            While we&rsquo;re out there.
+            {t.service.whileOut}
           </h2>
           <div style={{ display: 'flex', gap: 18, flexWrap: 'wrap' }}>
-            {Object.keys(SERVICE_CONTENT).filter((k) => k !== trade).map((k) => (
-              <a key={k} href={SR_URL('service:' + k)}
+            {Object.keys(content).filter((k) => k !== trade).map((k) => (
+              <a key={k} href={L(SR_URL('service:' + k))}
                 style={{
                   display: 'flex', alignItems: 'center', gap: 14, textDecoration: 'none', color: 'var(--sr-ink)',
                   background: 'var(--sr-panel)', border: 'var(--sr-rule-hairline)', padding: '14px 20px 14px 14px', cursor: 'pointer',
                 }}>
                 <TradeBadge trade={k} size={46} />
-                <span style={{ fontFamily: 'var(--sr-font-display)', fontWeight: 600, textTransform: 'uppercase', fontSize: 15, letterSpacing: '0.04em' }}>{SERVICE_CONTENT[k].label}</span>
+                <span style={{ fontFamily: 'var(--sr-font-display)', fontWeight: 600, textTransform: 'uppercase', fontSize: 15, letterSpacing: '0.04em' }}>{content[k].label}</span>
               </a>
             ))}
           </div>
@@ -198,7 +203,7 @@ export default function ServiceScreen({ trade = 'roofing' }) {
             {c.close}
           </h2>
           <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
-            <a href="/#quote" style={{
+            <a href={L('/#quote')} style={{
               background: 'var(--sr-red)', color: '#fff', fontFamily: 'var(--sr-font-body)', fontSize: 'var(--sr-size-button)',
               fontWeight: 600, letterSpacing: 'var(--sr-tracking-button)', textTransform: 'uppercase',
               padding: 'var(--sr-button-pad)', textDecoration: 'none', cursor: 'pointer', whiteSpace: 'nowrap',
