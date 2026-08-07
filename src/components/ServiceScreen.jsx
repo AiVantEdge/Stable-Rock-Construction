@@ -149,6 +149,28 @@ export default function ServiceScreen({ trade = 'roofing' }) {
         </section>
       ) : null}
 
+      {c.faqs ? (
+        <section style={{ padding: 'var(--sr-section-y) var(--sr-gutter)', background: 'var(--sr-panel)', borderTop: 'var(--sr-rule-hairline)' }}>
+          <div style={{ maxWidth: 940, margin: '0 auto' }}>
+            <p style={eyebrow()}>Common Questions</p>
+            <h2 style={{ fontFamily: 'var(--sr-font-display)', fontWeight: 700, textTransform: 'uppercase', fontSize: 'clamp(26px,3.2vw,42px)', lineHeight: 1.06, margin: '0 0 clamp(28px,4vw,44px)' }}>
+              {c.label} questions, answered.
+            </h2>
+            <div style={{ borderTop: 'var(--sr-rule-hairline)' }}>
+              {c.faqs.map(([q, a]) => (
+                <details key={q} style={{ borderBottom: 'var(--sr-rule-hairline)' }}>
+                  <summary style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 24, padding: '22px 0', fontFamily: 'var(--sr-font-display)', fontWeight: 600, textTransform: 'uppercase', fontSize: 'clamp(16px,1.7vw,20px)', color: 'var(--sr-ink)' }}>
+                    <span>{q}</span>
+                    <span className="sr-faq-plus" style={{ color: 'var(--sr-red)', fontSize: 26, lineHeight: 1, flexShrink: 0 }}>+</span>
+                  </summary>
+                  <p style={{ ...body(), fontSize: 16, margin: '0 0 22px', maxWidth: '72ch' }}>{a}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
       <section style={{ padding: 'var(--sr-section-y) var(--sr-gutter)' }}>
         <div style={{ maxWidth: 'var(--sr-container)', margin: '0 auto' }}>
           <p style={eyebrow()}>Other Trades</p>

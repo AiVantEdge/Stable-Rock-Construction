@@ -65,6 +65,13 @@ export const SERVICE_CONTENT = {
     heroAlt: 'Standing-seam metal roof on a modern Miami waterfront home at sunset',
     close: 'Want to know what your roof actually needs?',
     closeCta: 'Get a free inspection',
+    faqs: [
+      ['How long does a flat roof last in South Florida?', 'Most flat and low-slope systems here last about 15 to 25 years. Sun, heat, and ponding water are what wear them out, so a torch-down or modified-bitumen roof sits on the lower end and a metal roof on the higher end. We tell you honestly where yours is in that range.'],
+      ['Do I need a permit to replace my roof in Miami-Dade?', 'Yes. Every re-roof in Miami-Dade requires a permit and passes through inspections, and the materials have to carry a Miami-Dade Notice of Acceptance (NOA) and meet the High-Velocity Hurricane Zone (HVHZ) code. We pull the permit and handle the inspections for you.'],
+      ['What is the 25% roof rule in Florida?', 'Under the Florida Building Code, if more than 25% of a roof is repaired or replaced within 12 months, that roof section generally has to be brought up to current code rather than just patched. We tell you upfront if your repair crosses that line.'],
+      ['How long does a re-roof take?', 'A typical single-family re-roof runs a few days to about two weeks, depending on the size, the system, and the weather. We give you the crew date and timeline in writing before we start.'],
+      ['Will a new roof lower my insurance or help me get covered?', 'Often, yes. Roof age and a wind-mitigation inspection are two of the biggest factors carriers look at in South Florida, and a new, code-compliant roof usually helps with both. We build to what that inspection looks for.'],
+    ],
   },
   plumbing: {
     label: 'Plumbing',
@@ -117,6 +124,13 @@ export const SERVICE_CONTENT = {
     heroAlt: 'Finished primary bathroom with new fixtures in a South Florida home',
     close: 'Losing pressure or seeing brown water?',
     closeCta: 'Get a free diagnosis',
+    faqs: [
+      ['How do I know if my Miami home needs a repipe?', 'If your home still has galvanized steel or cast iron supply lines (common in houses built before the mid-1970s), you are on borrowed time. Brown or rusty water, weak pressure, and pinhole or slab leaks are the usual signs. We camera the lines first and tell you whether a repair or a full repipe is the honest call.'],
+      ['PEX or copper for a repipe?', 'Both are good. PEX is flexible, faster to install, and costs less; copper is proven and extremely long-lived. We walk you through which fits your home and budget instead of pushing one.'],
+      ['How can I tell if I have a slab leak?', 'Warm spots on the floor, the sound of running water when everything is off, an unexplained jump in your water bill, or new cracks in the slab. We use leak detection to pinpoint it before opening anything up.'],
+      ['How long does cast iron pipe last?', 'Cast iron drain lines typically last about 50 years, and a lot of older Miami homes are at or past that. It rusts from the inside and starts to back up, so catching it early saves you a messy repair.'],
+      ['Do I need a permit to repipe or move plumbing?', 'Yes. Repipes and any relocation of supply or drain lines are permitted and inspected. Because we also hold the general license, we open the wall, do the work, pass inspection, and close it back up.'],
+    ],
   },
   hvac: {
     label: 'Mechanical & HVAC',
@@ -140,6 +154,13 @@ export const SERVICE_CONTENT = {
     heroAlt: 'New condenser unit installed beside a modern waterfront Miami home',
     close: 'Is your A/C running constantly and still humid?',
     closeCta: 'Get a free assessment',
+    faqs: [
+      ['What size A/C do I actually need in Miami?', 'The right way is a Manual J load calculation for your specific house, not just matching whatever tonnage was there before. An oversized unit short-cycles, never pulls the humidity out, and dies early, which is the most common mistake we get called to fix down here.'],
+      ['Why is my house still humid with the A/C running?', 'Usually an oversized or short-cycling system, or ductwork leaking into the attic. In South Florida, controlling humidity matters as much as temperature, so we size and seal for both, not just for cold air.'],
+      ['How long does an A/C system last in Florida?', 'About 10 to 15 years. Our systems run nearly year-round and coastal salt air is hard on the coils, so Florida units wear faster than the national average. Regular maintenance stretches that out.'],
+      ['Do I need a permit to replace my A/C?', 'Yes. A/C changeouts are permitted and inspected in Miami-Dade, and larger mechanical jobs also require a recorded Notice of Commencement. We handle the paperwork and schedule so you are not without cooling overnight.'],
+      ['Is a new A/C worth it if my ducts are bad?', 'Not on its own. A new, efficient unit on leaky ducts is money you will not get back. We check the ducts as part of the assessment and tell you if sealing or replacing them is the better spend.'],
+    ],
   },
   general: {
     label: 'General Construction',
@@ -163,6 +184,13 @@ export const SERVICE_CONTENT = {
     heroAlt: 'Steel framing going up on a waterfront new-construction home in South Florida',
     close: 'Thinking about an addition or a new build?',
     closeCta: 'Get a free site walk',
+    faqs: [
+      ['How long does a building permit take in Miami-Dade?', 'It varies a lot with scope, from a few weeks for a simple job to a couple of months for a ground-up build or major addition. The permit is usually the long part, not the building, which is why we run that paperwork ourselves and keep the trades moving behind it.'],
+      ['Do I need a Notice of Commencement?', 'For most construction jobs over $2,500, Florida law requires a recorded Notice of Commencement before work starts (a higher threshold applies to A/C work). We prepare and handle it for you.'],
+      ['Can one licensed contractor really run the whole build?', 'Yes. We hold general, roofing, plumbing, and mechanical certifications, so the structure, the roof, the plumbing, and the A/C are all in-house under one license. That is why our schedules hold instead of stalling on a subcontractor.'],
+      ['What does building in the HVHZ change?', 'Miami-Dade and Broward sit in the High-Velocity Hurricane Zone, so products and assemblies have to carry a Notice of Acceptance (NOA) and meet stricter wind standards. We build to that from the plans forward, so it passes inspection the first time.'],
+      ['How much does an addition or new build cost?', 'It depends entirely on size, finishes, and site conditions, so any number without a walkthrough is a guess. We do a free site walk and give you one written, itemized price instead.'],
+    ],
   },
   windows: {
     label: 'Impact Windows & Doors',
@@ -186,6 +214,13 @@ export const SERVICE_CONTENT = {
     heroAlt: 'Modern South Florida waterfront home with floor-to-ceiling impact glass at sunset',
     close: 'Tired of putting up shutters every season?',
     closeCta: 'Get a free measure',
+    faqs: [
+      ['Do impact windows actually lower my insurance?', 'Usually, yes. Impact-rated windows and doors qualify for wind-mitigation credits with most Florida carriers. When the job is done we give you the wind-mitigation documentation to hand your insurer so you can claim it.'],
+      ['Impact windows or hurricane shutters?', 'Impact glass protects the opening all the time with nothing to put up, keeps the house quieter and cooler, and usually earns the bigger insurance credit. Shutters cost less up front but you have to deploy them before every storm.'],
+      ['Do impact windows need a permit and an NOA?', 'Yes. Impact windows and doors are permitted and inspected, and the products must carry a Miami-Dade Notice of Acceptance (NOA) for the HVHZ. We handle the permit and only install NOA-compliant products.'],
+      ['How much do impact windows cost?', 'It depends on the number of openings, the sizes, and whether it is a full-frame or retrofit install, so we measure first. We put the product, glass type, NOA, and price in writing before anything is ordered.'],
+      ['How long does installation take?', 'Once the units arrive, most homes are installed in a few days. The longer part is the manufacturing lead time on the units, which we schedule around so install happens when they actually land.'],
+    ],
   },
   remodels: {
     label: 'Remodels',
@@ -238,5 +273,12 @@ export const SERVICE_CONTENT = {
     heroAlt: 'Finished white kitchen remodel with waterfront views in South Florida',
     close: 'Ready to plan a kitchen or bath?',
     closeCta: 'Get a free walkthrough',
+    faqs: [
+      ['How long does a kitchen remodel take?', 'Most kitchen remodels run about 4 to 8 weeks depending on scope, selections, and whether walls or plumbing move. Because our trades are in-house, it is one schedule instead of waiting on separate companies to hand off to each other.'],
+      ['Do I need a permit for a bathroom remodel?', 'If you are moving plumbing or electrical, changing the layout, or touching structure, yes. A like-for-like cosmetic refresh often does not, and we tell you which one your project is before we start.'],
+      ['How much does a remodel cost in Miami?', 'It comes down to size, finishes, and how much actually moves. We talk through what you want and what it honestly costs before drawings, then give you one itemized number so there are no surprises mid-project.'],
+      ['Can I do a kitchen and bathroom at the same time?', 'Yes, and it usually saves money. Shared plumbing, tile, and labor across both projects bring the whole cost down, and one crew runs both instead of mobilizing twice.'],
+      ['Will you move plumbing and electrical, or just finishes?', 'We do all of it in-house. Rough-in plumbing and electrical, tile, cabinetry, and finishes are one team under one license, so nobody is pointing fingers when a handoff goes wrong.'],
+    ],
   },
 };

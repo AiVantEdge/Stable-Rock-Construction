@@ -18,3 +18,9 @@ a:hover{ color: var(--sr-red-deep); }
 
 @keyframes srMarquee{ from{ transform: translateX(0); } to{ transform: translateX(-50%); } }
 input:focus, textarea:focus{ outline: none; border-color: var(--sr-red) !important; }
+
+/* Zero-JS FAQ accordion (native <details>) */
+details > summary{ list-style: none; }
+details > summary::-webkit-details-marker{ display: none; }
+.sr-faq-plus{ transition: transform var(--sr-dur-fast); }
+details[open] .sr-faq-plus{ transform: rotate(45deg); }

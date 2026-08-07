@@ -159,6 +159,10 @@ export function serviceSchema(trade) {
           { '@type': 'ListItem', position: 3, name: c.crumb, item: url },
         ],
       },
+      ...(c.faqs ? [{
+        '@type': 'FAQPage',
+        mainEntity: c.faqs.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+      }] : []),
     ],
   };
 }
