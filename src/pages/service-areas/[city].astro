@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CityScreen from '../../components/CityScreen.jsx';
+import { LOCATIONS } from '../../data/locations.js';
+import { cityMeta, citySchema } from '../../data/seo.js';
+
+export function getStaticPaths() {
+  return LOCATIONS.map((city) => ({ params: { city: city.slug }, props: { city } }));
+}
+
+const { city } = Astro.props;
+const m = cityMeta(city);
+---
+<BaseLayout title={m.title} description={m.description} path={m.path} active="home" schema={citySchema(city)}>
+  <CityScreen city={city} />
+</BaseLayout>

@@ -127,6 +127,35 @@ export function homeSchema() {
   };
 }
 
+/* Per-city landing page title + meta description. */
+export function cityMeta(city) {
+  return {
+    path: `/service-areas/${city.slug}`,
+    title: `${city.name} Roofing & General Contractor | Stable Rock Construction`,
+    description: `Licensed, veteran-owned roofing, plumbing, HVAC, impact windows, and remodels in ${city.name}, ${city.region}. Florida state-certified, one company for every trade. Free quotes: 786-622-ROOF.`,
+  };
+}
+
+/* City page graph: business + founder + breadcrumb. */
+export function citySchema(city) {
+  const url = SITE + `/service-areas/${city.slug}`;
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      businessNode,
+      founderNode,
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: SITE + '/' },
+          { '@type': 'ListItem', position: 2, name: 'Service Areas', item: SITE + '/service-areas' },
+          { '@type': 'ListItem', position: 3, name: city.name, item: url },
+        ],
+      },
+    ],
+  };
+}
+
 /* Service page graph: business + Service (offer catalog from scope) + breadcrumb. */
 export function serviceSchema(trade) {
   const c = SERVICE_CONTENT[trade];

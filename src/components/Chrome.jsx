@@ -166,6 +166,7 @@ export function Footer() {
             <span style={{ fontFamily: T.body, fontSize: 11.5, fontWeight: 600, letterSpacing: 'var(--sr-tracking-meta)', textTransform: 'uppercase', color: '#fff' }}>Contact</span>
             <a href="tel:7866227663" style={item}>786-622-ROOF</a>
             <a href="mailto:info@stablerockconstruction.com" style={item}>info@stablerockconstruction.com</a>
+            <a href="/service-areas" style={item}>Service Areas</a>
             <span style={item}>Miami &middot; Florida Keys &middot; SWFL</span>
           </div>
         </div>
