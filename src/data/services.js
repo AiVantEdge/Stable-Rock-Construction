@@ -71,6 +71,9 @@ export const SERVICE_CONTENT = {
       ['What is the 25% roof rule in Florida?', 'Under the Florida Building Code, if more than 25% of a roof is repaired or replaced within 12 months, that roof section generally has to be brought up to current code rather than just patched. We tell you upfront if your repair crosses that line.'],
       ['How long does a re-roof take?', 'A typical single-family re-roof runs a few days to about two weeks, depending on the size, the system, and the weather. We give you the crew date and timeline in writing before we start.'],
       ['Will a new roof lower my insurance or help me get covered?', 'Often, yes. Roof age and a wind-mitigation inspection are two of the biggest factors carriers look at in South Florida, and a new, code-compliant roof usually helps with both. We build to what that inspection looks for.'],
+      ['How much does a new roof cost in South Florida?', 'It depends on the size, the system (flat/torch-down, metal, or tile), the shape and access of the roof, and the condition of the deck underneath once we open it up. Metal costs more up front than a flat system but lasts far longer. Rather than guess, we inspect for free and give you one itemized, written price.'],
+      ['Can my insurance company drop me just because my roof is old?', 'In Florida, carriers generally cannot refuse or non-renew solely on roof age under 15 years. At 15+ years (or after a failed 4-point inspection, usually around 20 years) they can require replacement or decline coverage. A wind-mitigation inspection is often what keeps an older but sound roof insurable — we build and document to that.'],
+      ['Is a Miami-Dade NOA the same as Florida Product Approval?', 'No, and confusing them causes failed permits. In the High-Velocity Hurricane Zone (Miami-Dade and Broward) roofing products must carry a Miami-Dade Notice of Acceptance (NOA), which is stricter than statewide Florida Product Approval. We only install NOA-compliant systems here.'],
     ],
   },
   plumbing: {
@@ -130,6 +133,9 @@ export const SERVICE_CONTENT = {
       ['How can I tell if I have a slab leak?', 'Warm spots on the floor, the sound of running water when everything is off, an unexplained jump in your water bill, or new cracks in the slab. We use leak detection to pinpoint it before opening anything up.'],
       ['How long does cast iron pipe last?', 'Cast iron drain lines typically last about 50 years, and a lot of older Miami homes are at or past that. It rusts from the inside and starts to back up, so catching it early saves you a messy repair.'],
       ['Do I need a permit to repipe or move plumbing?', 'Yes. Repipes and any relocation of supply or drain lines are permitted and inspected. Because we also hold the general license, we open the wall, do the work, pass inspection, and close it back up.'],
+      ['How much does a whole-home repipe cost?', 'It comes down to the size of the home, the number of bathrooms, whether we run PEX or copper, and how accessible the lines are. We camera the system and give you one written price, and where a repair is honestly an option we price it both ways. The only accurate number is a free diagnosis.'],
+      ['Will my insurance cover cast iron or polybutylene pipe replacement?', 'Usually not on its own — most policies exclude gradual corrosion, so a failing cast iron line is typically out of pocket. Polybutylene is the opposite problem: many Florida insurers now refuse or non-renew coverage until it is replaced. We document the work so you can update your carrier.'],
+      ['How do I know if I have polybutylene pipes?', 'Polybutylene is usually gray (sometimes blue) flexible pipe installed roughly between 1978 and 1995. It fails from the inside and is a common reason Florida carriers demand a repipe. If you are not sure, we identify it during a free diagnosis.'],
     ],
   },
   hvac: {
@@ -160,6 +166,9 @@ export const SERVICE_CONTENT = {
       ['How long does an A/C system last in Florida?', 'About 10 to 15 years. Our systems run nearly year-round and coastal salt air is hard on the coils, so Florida units wear faster than the national average. Regular maintenance stretches that out.'],
       ['Do I need a permit to replace my A/C?', 'Yes. A/C changeouts are permitted and inspected in Miami-Dade, and larger mechanical jobs also require a recorded Notice of Commencement. We handle the paperwork and schedule so you are not without cooling overnight.'],
       ['Is a new A/C worth it if my ducts are bad?', 'Not on its own. A new, efficient unit on leaky ducts is money you will not get back. We check the ducts as part of the assessment and tell you if sealing or replacing them is the better spend.'],
+      ['What size A/C do I actually need for my house?', 'The right size comes from a Manual J load calculation, not a guess off square footage. In Florida we generally figure roughly 400 to 500 square feet per ton, but insulation, windows, ceiling height, and sun exposure all move it. If a contractor quotes tonnage without measuring, they are guessing.'],
+      ['Should my thermostat fan be set to ON or AUTO?', 'AUTO, almost always. On ON, the fan runs constantly and re-evaporates moisture back into the house, which is why it feels humid. On AUTO the fan only runs while cooling, so the system actually pulls humidity out — a big deal in South Florida.'],
+      ['How do I protect my A/C from salt air near the coast?', 'Rinse the outdoor coil with fresh water regularly (roughly every couple of weeks within a few miles of the water), consider coated coils on a new unit, and place the condenser out of direct salt spray where possible. Salt corrosion is the main reason coastal units die early, so we plan for it.'],
     ],
   },
   general: {
@@ -190,6 +199,9 @@ export const SERVICE_CONTENT = {
       ['Can one licensed contractor really run the whole build?', 'Yes. We hold general, roofing, plumbing, and mechanical certifications, so the structure, the roof, the plumbing, and the A/C are all in-house under one license. That is why our schedules hold instead of stalling on a subcontractor.'],
       ['What does building in the HVHZ change?', 'Miami-Dade and Broward sit in the High-Velocity Hurricane Zone, so products and assemblies have to carry a Notice of Acceptance (NOA) and meet stricter wind standards. We build to that from the plans forward, so it passes inspection the first time.'],
       ['How much does an addition or new build cost?', 'It depends entirely on size, finishes, and site conditions, so any number without a walkthrough is a guess. We do a free site walk and give you one written, itemized price instead.'],
+      ['What happens if I build without a permit in Florida?', 'Unpermitted work follows the house. It can trigger code-enforcement fines, complicate or block a sale, and give an insurer a reason to deny a claim, and the county can make you open finished work to inspect it after the fact. We permit everything so it is clean at resale.'],
+      ['Should I pull my own owner-builder permit?', 'You can in Florida, but for anything beyond a small job it is risky — you take on the liability, the inspections, and the lien exposure yourself. For a full addition or new build, having a licensed contractor of record protects you. We are happy to explain where that line is for your project.'],
+      ['How do I check that a contractor is actually licensed?', 'Look up the license number at MyFloridaLicense.com — it should be a state Certified license (as of July 2025, local "registered" licenses were phased out). Ours are Florida State Certified: general CGC1521744, roofing CCC1332548, plumbing CFC1433873, and mechanical CMC1251627.'],
     ],
   },
   windows: {
@@ -220,6 +232,9 @@ export const SERVICE_CONTENT = {
       ['Do impact windows need a permit and an NOA?', 'Yes. Impact windows and doors are permitted and inspected, and the products must carry a Miami-Dade Notice of Acceptance (NOA) for the HVHZ. We handle the permit and only install NOA-compliant products.'],
       ['How much do impact windows cost?', 'It depends on the number of openings, the sizes, and whether it is a full-frame or retrofit install, so we measure first. We put the product, glass type, NOA, and price in writing before anything is ordered.'],
       ['How long does installation take?', 'Once the units arrive, most homes are installed in a few days. The longer part is the manufacturing lead time on the units, which we schedule around so install happens when they actually land.'],
+      ['Is there a grant for impact windows in Florida?', 'Yes — the My Safe Florida Home program offers matching grants (commonly up to $10,000) toward wind-mitigation upgrades like impact windows and doors on eligible homesteaded homes. It requires a free wind-mitigation inspection first and approval before work starts, and funding runs out fast. We can point you to the current application.'],
+      ['Do I have to replace ALL my windows to get the insurance discount?', 'Generally yes. Insurers grant the wind-mitigation credit for full opening protection — every window and exterior door rated or protected. A partial job usually will not qualify, so we plan the whole envelope and give you the documentation for your carrier.'],
+      ['Impact windows or hurricane shutters — which is better?', 'Impact glass protects the opening all the time with nothing to put up, keeps the house quieter and cooler, and usually earns the larger insurance credit. Shutters cost less up front but you have to deploy them before every storm. For most homeowners staying put, impact wins over a few years.'],
     ],
   },
   remodels: {
@@ -279,6 +294,9 @@ export const SERVICE_CONTENT = {
       ['How much does a remodel cost in Miami?', 'It comes down to size, finishes, and how much actually moves. We talk through what you want and what it honestly costs before drawings, then give you one itemized number so there are no surprises mid-project.'],
       ['Can I do a kitchen and bathroom at the same time?', 'Yes, and it usually saves money. Shared plumbing, tile, and labor across both projects bring the whole cost down, and one crew runs both instead of mobilizing twice.'],
       ['Will you move plumbing and electrical, or just finishes?', 'We do all of it in-house. Rough-in plumbing and electrical, tile, cabinetry, and finishes are one team under one license, so nobody is pointing fingers when a handoff goes wrong.'],
+      ['How much does a kitchen or bath remodel cost in Miami?', 'It depends on size, how much moves (walls, plumbing, electrical), and the finishes you choose. A cosmetic refresh and a full gut are very different numbers. We talk through what you want and what it honestly costs before drawings, then give you one itemized price — no surprises mid-project.'],
+      ['Do I need a permit to remodel my kitchen or bathroom?', 'If you move plumbing or electrical, change the layout, or touch structure, yes. A like-for-like cosmetic update (cabinets, counters, paint) often does not. Doing it unpermitted can mean fines and problems at resale, so we tell you which one your project is and handle the permit if needed.'],
+      ['Can you remodel to hurricane code and add impact windows at the same time?', 'Yes, and it is often the smart move. Because we hold roofing, mechanical, plumbing, and general licenses, we can bring the remodel up to current coastal code and add impact windows or a new A/C in the same project — one crew, one permit set, one schedule.'],
     ],
   },
 };

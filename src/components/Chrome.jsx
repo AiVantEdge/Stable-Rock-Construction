@@ -158,9 +158,10 @@ export function Footer({ lang = 'en' }) {
           <div style={{ marginBottom: 20 }}><Logo size={75} labelSize={28} /></div>
           <p style={{ fontFamily: T.body, fontSize: 14, lineHeight: 1.75, color: '#a29f97', margin: '0 0 14px' }}>{t.footer.blurb}</p>
           <p style={{ fontFamily: T.body, fontSize: 12, color: '#7f7d75', margin: '0 0 4px' }}>{t.footer.certified}</p>
-          <p style={{ fontFamily: T.body, fontSize: 12, color: '#7f7d75', margin: 0, lineHeight: 1.7 }}>
+          <p style={{ fontFamily: T.body, fontSize: 12, color: '#7f7d75', margin: '0 0 8px', lineHeight: 1.7 }}>
             {LICENSES.map((l) => l.id).join(' · ')}
           </p>
+          <a href="https://www.myfloridalicense.com" target="_blank" rel="noopener" style={{ fontFamily: T.body, fontSize: 12, color: 'var(--sr-red-soft)', textDecoration: 'none' }}>{t.footer.verify} &rarr;</a>
         </div>
         <div style={{ display: 'flex', gap: 56, flexWrap: 'wrap' }}>
           <div style={col}>
