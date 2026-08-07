@@ -52,7 +52,7 @@ export function Logo({ size = 80, labelSize = 32 }) {
 const NAV_ITEMS = [
   ['Services', '/roofing'],
   ['Advantage', '/#advantage'],
-  ['Work', '/#bundles'],
+  ['Guides', '/blog'],
   ['FAQ', '/#faq'],
 ];
 
@@ -167,6 +167,7 @@ export function Footer() {
             <a href="tel:7866227663" style={item}>786-622-ROOF</a>
             <a href="mailto:info@stablerockconstruction.com" style={item}>info@stablerockconstruction.com</a>
             <a href="/service-areas" style={item}>Service Areas</a>
+            <a href="/blog" style={item}>Guides</a>
             <span style={item}>Miami &middot; Florida Keys &middot; SWFL</span>
           </div>
         </div>

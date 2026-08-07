@@ -127,6 +127,37 @@ export function homeSchema() {
   };
 }
 
+/* Blog post graph: business + BlogPosting (authored by the owner) + breadcrumb. */
+export function blogPostSchema({ title, description, slug, datePublished, dateModified, author }) {
+  const url = `${SITE}/blog/${slug}`;
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      businessNode,
+      {
+        '@type': 'BlogPosting',
+        headline: title,
+        description,
+        datePublished,
+        dateModified: dateModified || datePublished,
+        author: { '@type': 'Person', '@id': FOUNDER_ID, name: author },
+        publisher: { '@id': BUSINESS_ID },
+        mainEntityOfPage: url,
+        image: OG_IMAGE,
+        url,
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: SITE + '/' },
+          { '@type': 'ListItem', position: 2, name: 'Guides', item: SITE + '/blog' },
+          { '@type': 'ListItem', position: 3, name: title, item: url },
+        ],
+      },
+    ],
+  };
+}
+
 /* Per-city landing page title + meta description. */
 export function cityMeta(city) {
   return {

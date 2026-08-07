@@ -24,3 +24,14 @@ details > summary{ list-style: none; }
 details > summary::-webkit-details-marker{ display: none; }
 .sr-faq-plus{ transition: transform var(--sr-dur-fast); }
 details[open] .sr-faq-plus{ transform: rotate(45deg); }
+
+/* Article / Markdown prose */
+.sr-prose{ font-family: var(--sr-font-body); color: var(--sr-ink); font-size: 17px; line-height: 1.8; }
+.sr-prose h2{ font-family: var(--sr-font-display); font-weight: 700; text-transform: uppercase; font-size: clamp(24px,2.8vw,34px); line-height: 1.1; margin: 2em 0 0.6em; }
+.sr-prose h3{ font-family: var(--sr-font-display); font-weight: 600; text-transform: uppercase; font-size: clamp(19px,2vw,23px); margin: 1.6em 0 0.5em; }
+.sr-prose p{ margin: 0 0 1.2em; }
+.sr-prose ul, .sr-prose ol{ margin: 0 0 1.4em; padding-left: 1.3em; }
+.sr-prose li{ margin: 0 0 0.5em; }
+.sr-prose a{ color: var(--sr-red); text-decoration: underline; text-underline-offset: 2px; }
+.sr-prose a:hover{ color: var(--sr-red-deep); }
+.sr-prose strong{ color: var(--sr-ink); font-weight: 600; }
