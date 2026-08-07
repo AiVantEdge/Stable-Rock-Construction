@@ -6,6 +6,20 @@ import { UI, TRADE_LABELS, REGION_LABELS, localizedPath } from '../i18n/ui.js';
 
 const TRADES = ['roofing', 'plumbing', 'hvac', 'general', 'windows', 'remodels'];
 
+/* Region-level local authority, applied to every city in that region. */
+const REGION_INSIGHT = {
+  en: {
+    'Miami-Dade County': ['Built to Miami-Dade code', 'Everything here follows the High-Velocity Hurricane Zone code, so products need a Miami-Dade Notice of Acceptance (NOA) and older roofs face insurance pressure at 15+ years. We build and document to what inspectors and carriers actually look for.'],
+    'Florida Keys': ['Built for the Keys', 'The Keys permit through Monroe County, under FEMA flood and elevation rules — a substantial improvement (roughly 50% or more of the home’s value) can require elevating to base flood elevation. Salt air is relentless on roofs and A/C, so we spec for a marine environment.'],
+    'Southwest Florida': ['Built for the Gulf coast', 'Lee and Collier County took direct hurricane damage from Ian, so storm-hardened, code-compliant work matters here. These are Wind-Borne Debris areas (impact glazing or approved protection), and coastal salt air shortens A/C life — we plan for both.'],
+  },
+  es: {
+    'Miami-Dade County': ['Construido al código de Miami-Dade', 'Todo aquí sigue el código de la Zona de Huracanes de Alta Velocidad, así que los productos necesitan un Notice of Acceptance (NOA) de Miami-Dade y los techos viejos enfrentan presión del seguro a los 15+ años. Construimos y documentamos según lo que de verdad buscan los inspectores y las aseguradoras.'],
+    'Florida Keys': ['Construido para los Cayos', 'Los Cayos se permiten por el Condado de Monroe, bajo reglas FEMA de inundación y elevación — una mejora sustancial (aproximadamente 50% o más del valor de la casa) puede exigir elevar a la cota base de inundación. El aire salino es implacable con techos y A/C, así que especificamos para un ambiente marino.'],
+    'Southwest Florida': ['Construido para la costa del Golfo', 'Los condados de Lee y Collier recibieron daño directo del huracán Ian, así que el trabajo resistente y a código importa aquí. Son áreas de Escombros por Viento (vidrio de impacto o protección aprobada), y el aire salino de la costa acorta la vida del A/C — planificamos para ambos.'],
+  },
+};
+
 const eyebrow = (color = 'var(--sr-red)') => ({
   fontFamily: 'var(--sr-font-body)', fontSize: 'var(--sr-size-label)', fontWeight: 600,
   letterSpacing: 'var(--sr-tracking-eyebrow)', textTransform: 'uppercase', color, margin: '0 0 20px',
@@ -31,6 +45,7 @@ export default function CityScreen({ city, lang = 'en' }) {
   const local = es ? es.local : city.local;
   const permitAuthority = es ? es.permitAuthority : city.permitAuthority;
   const region = (REGION_LABELS[lang] && REGION_LABELS[lang][city.region]) || city.region;
+  const insight = (REGION_INSIGHT[lang] && REGION_INSIGHT[lang][city.region]) || null;
 
   return (
     <div>
@@ -58,6 +73,12 @@ export default function CityScreen({ city, lang = 'en' }) {
           <h2 style={{ ...h2s(), marginBottom: 22 }}>{t.city.localHeading}</h2>
           <p style={{ ...bodyP(), margin: '0 0 20px' }}>{blurb}</p>
           <p style={{ ...bodyP(), margin: 0 }}>{local}</p>
+          {insight ? (
+            <div style={{ marginTop: 28, background: 'var(--sr-panel)', borderTop: 'var(--sr-rule-accent)', border: 'var(--sr-rule-hairline)', padding: 'clamp(22px,3vw,32px)' }}>
+              <p style={{ ...eyebrow(), margin: '0 0 12px' }}>{insight[0]}</p>
+              <p style={{ ...bodyP(), margin: 0 }}>{insight[1]}</p>
+            </div>
+          ) : null}
         </div>
       </section>
 
