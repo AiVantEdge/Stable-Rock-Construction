@@ -9,6 +9,11 @@ import { TRADE_LABELS, localizedPath } from '../i18n/ui.js';
 
 const TRADES = ['roofing', 'plumbing', 'hvac', 'general', 'windows', 'remodels'];
 
+/* Canonical tag names for the quote-form service chips (same order as the
+   localized labels in HOME[lang].quote.chips), so a lead is tagged identically
+   whether they used the English or Spanish form. */
+const CHIP_TAGS = ['Roofing', 'Plumbing', 'Mechanical / HVAC', 'General Construction', 'Windows & Doors', 'Kitchen Remodel', 'Bathroom Remodel', 'Other'];
+
 const section = (extra = {}) => ({ padding: 'var(--sr-section-y) var(--sr-gutter)', ...extra });
 const inner = (extra = {}) => ({ maxWidth: 'var(--sr-container)', margin: '0 auto', ...extra });
 const eyebrow = (color = 'var(--sr-red)') => ({
@@ -127,9 +132,54 @@ function QuoteBlock({ lang }) {
   const isMobile = useIsMobile();
   const q = HOME[lang].quote;
   const [sent, setSent] = useState(false);
-  const [picked, setPicked] = useState([q.chips[0]]);
+  const [sending, setSending] = useState(false);
+  const [errored, setErrored] = useState(false);
+  const [picked, setPicked] = useState([CHIP_TAGS[0]]);
   const label = { fontFamily: 'var(--sr-font-body)', fontSize: 11.5, fontWeight: 600, letterSpacing: 'var(--sr-tracking-meta)', textTransform: 'uppercase', color: 'var(--sr-ink)', display: 'flex', flexDirection: 'column', gap: 7 };
   const input = { fontFamily: 'var(--sr-font-body)', fontSize: 15, padding: '13px 14px', border: '1px solid var(--sr-line)', background: '#fff', color: 'var(--sr-ink)', borderRadius: 0 };
+  const errText = lang === 'es'
+    ? 'No pudimos enviar su solicitud. Llámenos al 786-622-ROOF o escríbanos a info@stablerockconstruction.com.'
+    : 'We couldn’t send your request. Please call us at 786-622-ROOF or email info@stablerockconstruction.com.';
+  const sendingText = lang === 'es' ? 'Enviando…' : 'Sending…';
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    if (sending) return;
+    const fd = new FormData(e.currentTarget);
+    const honeypot = (fd.get('company') || '').toString().trim();
+    if (honeypot) { setSent(true); return; }
+    const fullName = (fd.get('fullName') || '').toString().trim();
+    const sp = fullName.indexOf(' ');
+    const city = (fd.get('city') || '').toString().trim();
+    const details = (fd.get('details') || '').toString().trim();
+    const payload = {
+      full_name: fullName,
+      first_name: sp === -1 ? fullName : fullName.slice(0, sp),
+      last_name: sp === -1 ? '' : fullName.slice(sp + 1),
+      phone: (fd.get('phone') || '').toString().trim(),
+      email: (fd.get('email') || '').toString().trim(),
+      city,
+      services: picked,
+      details,
+      source: 'Website Quote Form',
+      page: typeof window !== 'undefined' ? window.location.pathname : '',
+      language: lang,
+      tags: ['Website Quote', ...(lang === 'es' ? ['Spanish Lead'] : []), ...picked],
+      note: `Website quote request (${lang.toUpperCase()})\nServices: ${picked.join(', ') || '—'}\nCity/ZIP: ${city || '—'}\n\nProject details:\n${details || '—'}`,
+      company: honeypot,
+    };
+    try {
+      setSending(true);
+      setErrored(false);
+      const r = await fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      if (!r.ok) throw new Error('bad_status');
+      setSent(true);
+    } catch (err) {
+      setErrored(true);
+    } finally {
+      setSending(false);
+    }
+  }
   return (
     <section id="quote" style={section({ background: 'var(--sr-charcoal)', color: '#fff' })}>
       <div style={inner({ maxWidth: 1200, display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '0.82fr 1.18fr', gap: 'clamp(40px,5vw,76px)', alignItems: 'start' })}>
@@ -157,23 +207,27 @@ function QuoteBlock({ lang }) {
               <p style={{ ...bodyP(), fontSize: 15, margin: '0 auto', maxWidth: '38ch' }}>{q.sentMsg}</p>
             </div>
           ) : (
-            <form onSubmit={(e) => { e.preventDefault(); setSent(true); }} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
               <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 14 }}>
-                <label style={label}>{q.nameLabel}<input required placeholder={q.namePh} style={input} /></label>
-                <label style={label}>{q.phoneLabel}<input required type="tel" placeholder={q.phonePh} style={input} /></label>
+                <label style={label}>{q.nameLabel}<input name="fullName" required placeholder={q.namePh} style={input} /></label>
+                <label style={label}>{q.phoneLabel}<input name="phone" required type="tel" placeholder={q.phonePh} style={input} /></label>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 14 }}>
-                <label style={label}>{q.emailLabel}<input type="email" placeholder={q.emailPh} style={input} /></label>
-                <label style={label}>{q.cityLabel}<input placeholder={q.cityPh} style={input} /></label>
+                <label style={label}>{q.emailLabel}<input name="email" type="email" placeholder={q.emailPh} style={input} /></label>
+                <label style={label}>{q.cityLabel}<input name="city" placeholder={q.cityPh} style={input} /></label>
               </div>
+              {/* Honeypot: hidden from people, tempting to bots. */}
+              <input type="text" name="company" tabIndex={-1} autoComplete="off" aria-hidden="true"
+                style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
               <div>
                 <span style={{ ...label, marginBottom: 12 }}>{q.needLabel}</span>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 9 }}>
-                  {q.chips.map((c) => {
-                    const on = picked.includes(c);
+                  {q.chips.map((c, i) => {
+                    const tag = CHIP_TAGS[i];
+                    const on = picked.includes(tag);
                     return (
-                      <button key={c} type="button"
-                        onClick={() => setPicked(on ? picked.filter((p) => p !== c) : [...picked, c])}
+                      <button key={tag} type="button"
+                        onClick={() => setPicked(on ? picked.filter((p) => p !== tag) : [...picked, tag])}
                         style={{
                           fontFamily: 'var(--sr-font-body)', fontWeight: 500, fontSize: 13, padding: '9px 16px',
                           border: '1px solid ' + (on ? 'var(--sr-red)' : 'var(--sr-line)'),
@@ -184,11 +238,13 @@ function QuoteBlock({ lang }) {
                   })}
                 </div>
               </div>
-              <label style={label}>{q.detailsLabel}<textarea rows={3} placeholder={q.detailsPh} style={{ ...input, resize: 'vertical' }} /></label>
-              <button type="submit" style={{
+              <label style={label}>{q.detailsLabel}<textarea name="details" rows={3} placeholder={q.detailsPh} style={{ ...input, resize: 'vertical' }} /></label>
+              <button type="submit" disabled={sending} style={{
                 fontFamily: 'var(--sr-font-body)', fontWeight: 600, fontSize: 15, letterSpacing: 'var(--sr-tracking-button)',
-                textTransform: 'uppercase', background: 'var(--sr-red)', color: '#fff', border: 'none', padding: 17, cursor: 'pointer',
-              }}>{q.submit}</button>
+                textTransform: 'uppercase', background: 'var(--sr-red)', color: '#fff', border: 'none', padding: 17,
+                cursor: sending ? 'default' : 'pointer', opacity: sending ? 0.7 : 1,
+              }}>{sending ? sendingText : q.submit}</button>
+              {errored ? <p style={{ fontFamily: 'var(--sr-font-body)', fontSize: 13, margin: 0, textAlign: 'center', color: 'var(--sr-red)' }}>{errText}</p> : null}
               <p style={{ ...bodyP(), fontSize: 12, margin: 0, textAlign: 'center' }}>{q.privacy}</p>
             </form>
           )}
