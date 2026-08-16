@@ -16,9 +16,10 @@ export const OG_IMAGE = SITE + '/assets/imagery/hero-truck.webp';
 export const GA_MEASUREMENT_ID = ''; // e.g. 'G-XXXXXXXXXX' from a GA4 property
 export const GSC_VERIFICATION = ''; // content value of the Search Console meta tag
 
-/* Quote form posts to /api/lead (a Vercel serverless function) which forwards to
-   GoHighLevel. The GHL Inbound Webhook URL is stored server-side as the Vercel
-   env var GHL_WEBHOOK_URL — never in client code. */
+/* Quote form posts to /api/lead (a Vercel serverless function) which creates the
+   contact in GoHighLevel (with service tags + a note), firing the sub-account's
+   "Contact Created" follow-up workflow. Server-side Vercel env vars (never in the
+   browser): GHL_PIT (Private Integration Token) and GHL_LOCATION_ID. */
 
 const AREA_SERVED = [
   { '@type': 'AdministrativeArea', name: 'Miami' },
