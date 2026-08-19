@@ -70,5 +70,15 @@ const fontsHref = 'https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;
   <Header client:load active={active} lang={lang} path={path} />
   <slot />
   <Footer lang={lang} />
+
+  <!-- Click-to-call tracking: fires a GA4 event on any tel: link click (no-op until GA4 is on). -->
+  <script is:inline>
+    document.addEventListener('click', function (e) {
+      var a = e.target && e.target.closest && e.target.closest('a[href^="tel:"]');
+      if (a && typeof window.gtag === 'function') {
+        window.gtag('event', 'click_to_call', { transport_type: 'beacon', link_url: a.getAttribute('href') });
+      }
+    }, true);
+  </script>
 </body>
 </html>

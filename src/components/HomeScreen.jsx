@@ -174,6 +174,9 @@ function QuoteBlock({ lang }) {
       const r = await fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
       if (!r.ok) throw new Error('bad_status');
       setSent(true);
+      if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+        window.gtag('event', 'generate_lead', { services: picked.join(', '), language: lang, source: 'website_quote_form' });
+      }
     } catch (err) {
       setErrored(true);
     } finally {
