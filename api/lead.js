@@ -35,6 +35,9 @@ export default async function handler(req, res) {
       return res.status(400).json({ ok: false, error: 'missing_fields' });
     }
 
+    // Services the visitor selected (canonical labels), for tags + the "Services Requested" field.
+    const services = Array.isArray(d.services) ? d.services.filter(Boolean) : [];
+
     // 1) Upsert the contact (create if new, match on phone/email). Tags + source set here.
     const upsertBody = {
       locationId,
@@ -46,6 +49,12 @@ export default async function handler(req, res) {
       city: d.city || undefined,
       source: d.source || 'Website Quote Form',
       tags: Array.isArray(d.tags) ? d.tags : [],
+      // Writes the chosen services into the GHL contact custom field
+      // "Services Requested" ({{contact.services_requested}}) for a clean merge
+      // in the internal new-lead SMS/email.
+      customFields: services.length
+        ? [{ key: 'contact.services_requested', field_value: services.join(', ') }]
+        : undefined,
     };
     const upsertRes = await fetch(`${GHL}/contacts/upsert`, {
       method: 'POST',
