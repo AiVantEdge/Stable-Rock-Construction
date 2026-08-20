@@ -16,15 +16,46 @@ const HEADERS = (token) => ({
   Accept: 'application/json',
 });
 
+// Resolve the "Services Requested" contact custom field's id once and reuse it
+// across warm invocations. Writing by id is the only reliable format for the
+// GHL v2 upsert (writing by key silently no-ops on some field types).
+let cachedServicesFieldId; // undefined = not resolved; string = id; null not cached (retry)
+async function getServicesFieldId(token, locationId) {
+  if (cachedServicesFieldId) return cachedServicesFieldId;
+  const r = await fetch(`${GHL}/locations/${locationId}/customFields?model=contact`, {
+    headers: HEADERS(token),
+  });
+  if (!r.ok) return null; // e.g. missing scope — don't cache, fall back to key
+  const j = await r.json();
+  const arr = j.customFields || j.customField || [];
+  const f = arr.find(
+    (x) =>
+      (x.fieldKey || '').toLowerCase().endsWith('services_requested') ||
+      (x.name || '').toLowerCase() === 'services requested'
+  );
+  if (f && f.id) cachedServicesFieldId = f.id;
+  return f ? f.id : null;
+}
+
 export default async function handler(req, res) {
+  const token = process.env.GHL_PIT;
+  const locationId = process.env.GHL_LOCATION_ID;
+  if (!token || !locationId) return res.status(500).json({ ok: false, error: 'not_configured' });
+
+  // Diagnostic (guarded): GET /api/lead?debug=fields&k=<locationId> lists the
+  // location's contact custom fields so we can confirm the field id + PIT scope.
+  if (req.method === 'GET' && req.query && req.query.debug === 'fields' && req.query.k === locationId) {
+    const r = await fetch(`${GHL}/locations/${locationId}/customFields?model=contact`, {
+      headers: HEADERS(token),
+    });
+    const body = await r.text().catch(() => '');
+    return res.status(200).json({ status: r.status, body: body.slice(0, 6000) });
+  }
+
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ ok: false, error: 'method_not_allowed' });
   }
-
-  const token = process.env.GHL_PIT;
-  const locationId = process.env.GHL_LOCATION_ID;
-  if (!token || !locationId) return res.status(500).json({ ok: false, error: 'not_configured' });
 
   try {
     const d = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
@@ -37,6 +68,20 @@ export default async function handler(req, res) {
 
     // Services the visitor selected (canonical labels), for tags + the "Services Requested" field.
     const services = Array.isArray(d.services) ? d.services.filter(Boolean) : [];
+
+    // Build the custom-field write for "Services Requested". Prefer the field id
+    // (reliable); fall back to the key if the id lookup fails (e.g. missing scope).
+    let customFields;
+    if (services.length) {
+      const value = services.join(', ');
+      let fieldId = null;
+      try {
+        fieldId = await getServicesFieldId(token, locationId);
+      } catch (_) {}
+      customFields = fieldId
+        ? [{ id: fieldId, field_value: value }]
+        : [{ key: 'contact.services_requested', field_value: value }];
+    }
 
     // 1) Upsert the contact (create if new, match on phone/email). Tags + source set here.
     const upsertBody = {
@@ -52,9 +97,7 @@ export default async function handler(req, res) {
       // Writes the chosen services into the GHL contact custom field
       // "Services Requested" ({{contact.services_requested}}) for a clean merge
       // in the internal new-lead SMS/email.
-      customFields: services.length
-        ? [{ key: 'contact.services_requested', field_value: services.join(', ') }]
-        : undefined,
+      customFields,
     };
     const upsertRes = await fetch(`${GHL}/contacts/upsert`, {
       method: 'POST',
