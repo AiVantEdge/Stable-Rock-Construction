@@ -134,7 +134,7 @@ function QuoteBlock({ lang }) {
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [errored, setErrored] = useState(false);
-  const [picked, setPicked] = useState([CHIP_TAGS[0]]);
+  const [picked, setPicked] = useState([]); // nothing pre-selected — tag only what the visitor actually picks
   const label = { fontFamily: 'var(--sr-font-body)', fontSize: 11.5, fontWeight: 600, letterSpacing: 'var(--sr-tracking-meta)', textTransform: 'uppercase', color: 'var(--sr-ink)', display: 'flex', flexDirection: 'column', gap: 7 };
   const input = { fontFamily: 'var(--sr-font-body)', fontSize: 15, padding: '13px 14px', border: '1px solid var(--sr-line)', background: '#fff', color: 'var(--sr-ink)', borderRadius: 0 };
   const errText = lang === 'es'
