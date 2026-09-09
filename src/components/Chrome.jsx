@@ -187,6 +187,13 @@ export function Footer({ lang = 'en' }) {
         textTransform: 'uppercase', color: '#7f7d75',
       }}>
         <span>&copy; 2026 {t.footer.rights}</span>
+        {/* Privacy + Terms must be reachable from every page holding the quote form —
+            carriers check for them during A2P 10DLC registration. Legal pages are a single
+            English canonical (no /es mirror), so link there from both languages. */}
+        <span style={{ display: 'flex', gap: 16 }}>
+          <a href="/privacy" style={{ color: 'inherit', textDecoration: 'none' }}>{lang === 'es' ? 'Privacidad' : 'Privacy'}</a>
+          <a href="/terms" style={{ color: 'inherit', textDecoration: 'none' }}>{lang === 'es' ? 'Términos' : 'Terms'}</a>
+        </span>
         <span>{t.footer.tagline}</span>
       </div>
     </footer>

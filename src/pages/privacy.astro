@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Required for A2P 10DLC carrier registration. Carriers load this page and look for the
+// "no mobile information will be sold, rented or shared" sentence. Do not reword it.
+---
+<BaseLayout
+  title="Privacy Policy | Stable Rock Construction LLC"
+  description="How Stable Rock Construction LLC collects, uses and protects the information you share through this website, including text messaging."
+  path="/privacy"
+  active="legal"
+>
+  <main class="legal">
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: September 2026</p>
+
+    <p>Stable Rock Construction LLC (&ldquo;we&rdquo;, &ldquo;us&rdquo;) respects your privacy. This policy explains what we collect, why, and what we do not do with it.</p>
+
+    <h2>What we collect</h2>
+    <p>When you submit a form on this website we collect the name, phone number, email address and project details you give us. We do not collect sensitive personal information.</p>
+
+    <h2>Why we collect it</h2>
+    <p>To respond to your enquiry, quote and schedule work, and to follow up about your project. If you tick the consent box, we may contact you by text message about your project, appointments and service updates.</p>
+
+    <h2>Text messaging</h2>
+    <p>Message and data rates may apply. Message frequency may vary. You can stop messages at any time by replying STOP, or reply HELP for help. Opting out of text messages does not affect your ability to contact us by phone or email.</p>
+
+    <h2>We do not sell or share your information</h2>
+    <p>No mobile information will be sold, rented or shared with third parties or affiliates for marketing or promotional purposes. Information may be shared only with service providers who help us operate this website and our messaging, and who are not permitted to use it for their own marketing.</p>
+
+    <h2>How long we keep it</h2>
+    <p>For as long as needed to serve you and to meet legal and accounting obligations, after which it is deleted.</p>
+
+    <h2>Your choices</h2>
+    <p>You may ask us to correct or delete your information, or to stop contacting you, at any time using the details below.</p>
+
+    <h2>Contact</h2>
+    <p>
+      Stable Rock Construction LLC, 3110 NW 4 St, Miami, FL 33125.<br />
+      Phone: <a href="tel:+17866227663">(786) 622-7663</a><br />
+      Email: <a href="mailto:abnernu1@stablerockconstruction.com">abnernu1@stablerockconstruction.com</a>
+    </p>
+  </main>
+</BaseLayout>
+
+<style>
+  .legal { max-width: 74ch; margin: 0 auto; padding: 96px 24px 120px; font-family: var(--sr-font-body, system-ui), sans-serif; color: #2e2b26; }
+  .legal h1 { font-family: var(--sr-font-serif, Georgia), serif; font-size: clamp(32px, 5vw, 46px); font-weight: 600; margin: 0 0 8px; text-wrap: balance; }
+  .legal h2 { font-family: var(--sr-font-serif, Georgia), serif; font-size: 22px; font-weight: 600; margin: 38px 0 10px; }
+  .legal p { font-size: 16px; line-height: 1.8; margin: 0 0 14px; }
+  .legal .updated { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #86827a; margin-bottom: 30px; }
+  .legal a { color: var(--sr-red, #b3261e); }
+</style>
