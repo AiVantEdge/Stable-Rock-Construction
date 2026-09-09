@@ -153,6 +153,7 @@ function QuoteBlock({ lang }) {
     const city = (fd.get('city') || '').toString().trim();
     const details = (fd.get('details') || '').toString().trim();
     const smsConsent = fd.get('smsConsent') === 'yes';
+    const smsMarketing = fd.get('smsMarketing') === 'yes';
     const payload = {
       full_name: fullName,
       first_name: sp === -1 ? fullName : fullName.slice(0, sp),
@@ -166,8 +167,9 @@ function QuoteBlock({ lang }) {
       page: typeof window !== 'undefined' ? window.location.pathname : '',
       language: lang,
       sms_consent: smsConsent,
-      tags: ['Website Quote', ...(lang === 'es' ? ['Spanish Lead'] : []), ...(smsConsent ? ['SMS Consent'] : []), ...picked],
-      note: `Website quote request (${lang.toUpperCase()})\nServices: ${picked.join(', ') || '—'}\nCity/ZIP: ${city || '—'}\nSMS consent: ${smsConsent ? 'YES (checked opt-in box)' : 'no'}\n\nProject details:\n${details || '—'}`,
+      sms_marketing_consent: smsMarketing,
+      tags: ['Website Quote', ...(lang === 'es' ? ['Spanish Lead'] : []), ...(smsConsent ? ['SMS Consent'] : []), ...(smsMarketing ? ['SMS Marketing Consent'] : []), ...picked],
+      note: `Website quote request (${lang.toUpperCase()})\nServices: ${picked.join(', ') || '—'}\nCity/ZIP: ${city || '—'}\nSMS consent: ${smsConsent ? 'YES' : 'no'} · Marketing SMS: ${smsMarketing ? 'YES' : 'no'}\n\nProject details:\n${details || '—'}`,
       company: honeypot,
     };
     try {
@@ -217,18 +219,6 @@ function QuoteBlock({ lang }) {
                 <label style={label}>{q.nameLabel}<input name="fullName" required placeholder={q.namePh} style={input} /></label>
                 <label style={label}>{q.phoneLabel}<input name="phone" required type="tel" placeholder={q.phonePh} style={input} /></label>
               </div>
-              {/* SMS consent — required for A2P 10DLC carrier registration. Sits directly under
-                  the phone field so a reviewer sees the box and the field together.
-                  Must stay UNTICKED by default; a pre-ticked box is itself a rejection cause.
-                  Keep "may apply" and "may vary" exactly as written — reviewers check them near-literally. */}
-              <label style={{ display: 'flex', alignItems: 'flex-start', gap: 10, cursor: 'pointer' }}>
-                <input type="checkbox" name="smsConsent" value="yes"
-                  style={{ marginTop: 3, width: 16, height: 16, flexShrink: 0, accentColor: 'var(--sr-red)' }} />
-                <span style={{ fontFamily: 'var(--sr-font-body)', fontSize: 13, lineHeight: 1.6, color: '#6b6862' }}>
-                  {q.smsConsent}{' '}
-                  <a href="/privacy" style={{ color: 'var(--sr-red)', textDecoration: 'underline' }}>{q.smsPrivacyLink}</a>.
-                </span>
-              </label>
               <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 14 }}>
                 <label style={label}>{q.emailLabel}<input name="email" type="email" placeholder={q.emailPh} style={input} /></label>
                 <label style={label}>{q.cityLabel}<input name="city" placeholder={q.cityPh} style={input} /></label>
@@ -257,6 +247,28 @@ function QuoteBlock({ lang }) {
                 </div>
               </div>
               <label style={label}>{q.detailsLabel}<textarea name="details" rows={3} placeholder={q.detailsPh} style={{ ...input, resize: 'vertical' }} /></label>
+
+              {/* SMS consent — A2P 10DLC. Two separate opt-ins (transactional + marketing),
+                  placed at the bottom of the form. Both UNTICKED by default and neither is
+                  required; a pre-ticked box is itself a carrier-rejection cause. */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                <label style={{ display: 'flex', alignItems: 'flex-start', gap: 10, cursor: 'pointer' }}>
+                  <input type="checkbox" name="smsConsent" value="yes"
+                    style={{ marginTop: 3, width: 16, height: 16, flexShrink: 0, accentColor: 'var(--sr-red)' }} />
+                  <span style={{ fontFamily: 'var(--sr-font-body)', fontSize: 12, lineHeight: 1.6, color: '#6b6862' }}>
+                    {q.smsConsent}{' '}
+                    <a href="/privacy" style={{ color: 'var(--sr-red)', textDecoration: 'underline' }}>{q.smsPrivacyLink}</a>.
+                  </span>
+                </label>
+                <label style={{ display: 'flex', alignItems: 'flex-start', gap: 10, cursor: 'pointer' }}>
+                  <input type="checkbox" name="smsMarketing" value="yes"
+                    style={{ marginTop: 3, width: 16, height: 16, flexShrink: 0, accentColor: 'var(--sr-red)' }} />
+                  <span style={{ fontFamily: 'var(--sr-font-body)', fontSize: 12, lineHeight: 1.6, color: '#6b6862' }}>
+                    {q.smsMarketing}
+                  </span>
+                </label>
+              </div>
+
               <button type="submit" disabled={sending} style={{
                 fontFamily: 'var(--sr-font-body)', fontWeight: 600, fontSize: 15, letterSpacing: 'var(--sr-tracking-button)',
                 textTransform: 'uppercase', background: 'var(--sr-red)', color: '#fff', border: 'none', padding: 17,
