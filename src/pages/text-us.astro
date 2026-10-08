@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { LICENSES } from '../data/seo.js';
+
+// A2P 10DLC opt-in page for GoHighLevel's guided chat-widget registration path.
+// Rules (learned on Palmetto Bay, 2026-10-04):
+// - This is the ONLY page that loads the GHL chat widget. Never add the widget to a page
+//   that also has the quote form or any phone/consent form ("Multiple Opt-ins" pre-check).
+// - No form-like copy or buttons here ("leave your name and phone", "Start a chat").
+// - Keep the full business information (who, services, licenses, phone, email, area):
+//   a bare page was rejected by the carrier with 30919 "website lacks business information".
+// - Never publish the street address (it is the owner's home; service-area business).
+// Paste the widget id GHL generates in the A2P wizard (Trust Center) below.
+const CHAT_WIDGET_ID = '';
+
+const services = [
+  ['Roofing', 'repairs, re-roofs, leak detection and roof inspections'],
+  ['Plumbing', 'leaks, repipes, water heaters and drain work'],
+  ['Mechanical & HVAC', 'A/C repair, replacement and maintenance'],
+  ['General construction', 'impact windows and doors, remodels and storm repairs'],
+];
+---
+<BaseLayout
+  title="Contact & Text Updates | Stable Rock Construction LLC"
+  description="Reach Stable Rock Construction LLC, a veteran-owned, Florida state-certified roofing, plumbing, A/C and general contractor serving Miami-Dade, the Florida Keys and Southwest Florida."
+  path="/text-us"
+  active="legal"
+>
+  <main class="legal">
+    <h1>Stable Rock Construction</h1>
+
+    <p>Stable Rock Construction LLC is a veteran-owned contractor in Miami, Florida, in business since 2004. Owner and qualifying contractor Abner Nunez holds four Florida state certifications, so one company handles every trade on your home.</p>
+
+    <h2>What we do</h2>
+    <ul>
+      {services.map(([name, detail]) => <li><strong>{name}:</strong> {detail}</li>)}
+    </ul>
+    <p>Florida DBPR certifications: {LICENSES.map((l) => `${l.name} ${l.id}`).join(' · ')}.</p>
+
+    <h2>Where we work and how to reach us</h2>
+    <p>We serve homeowners in Miami, Miami-Dade County, the Florida Keys and Southwest Florida, and we come to you for every estimate.</p>
+    <p>
+      Call <a href="tel:+17866227663">(786) 622-7663</a> (786-622-ROOF)<br />
+      Email <a href="mailto:abnernu1@stablerockconstruction.com">abnernu1@stablerockconstruction.com</a><br />
+      Website <a href="/">stablerockconstruction.com</a>
+    </p>
+
+    <h2>Chat with us and text updates</h2>
+    <p>Have a question about a repair, an estimate or a job in progress? Use the chat in the corner of this page to send our team a message.</p>
+    <p>Stable Rock Construction sends text messages to homeowners who ask for them: replies to their questions, estimate and appointment confirmations and reminders, and job status updates. With a separate, optional opt-in, we may also send occasional promotional messages such as seasonal roof inspection offers. Agreeing to receive texts is never required to get an estimate or hire us. Message frequency varies. Message and data rates may apply. Reply STOP to opt out at any time or HELP for help. We do not sell or share mobile information or text consent with third parties.</p>
+    <p>Read our <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms of Service</a>.</p>
+
+    <p class="nap">Stable Rock Construction LLC · Serving Miami-Dade, the Florida Keys and Southwest Florida · (786) 622-7663 · abnernu1@stablerockconstruction.com</p>
+  </main>
+
+  {CHAT_WIDGET_ID && (
+    <script
+      is:inline
+      src="https://widgets.leadconnectorhq.com/loader.js"
+      data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js"
+      data-widget-id={CHAT_WIDGET_ID}
+      data-source="WEB_USER"
+    ></script>
+  )}
+</BaseLayout>
+
+<style>
+  .legal { max-width: 74ch; margin: 0 auto; padding: 96px 24px 120px; font-family: var(--sr-font-body, system-ui), sans-serif; color: #2e2b26; }
+  .legal h1 { font-family: var(--sr-font-serif, Georgia), serif; font-size: clamp(32px, 5vw, 46px); font-weight: 600; margin: 0 0 18px; text-wrap: balance; }
+  .legal h2 { font-family: var(--sr-font-serif, Georgia), serif; font-size: 22px; font-weight: 600; margin: 38px 0 10px; }
+  .legal p { font-size: 16px; line-height: 1.8; margin: 0 0 14px; }
+  .legal ul { font-size: 16px; line-height: 1.8; margin: 0 0 14px; padding-left: 22px; }
+  .legal li { margin: 0 0 8px; }
+  .legal a { color: inherit; }
+  .legal .nap { margin-top: 40px; font-size: 14px; color: #86827a; }
+</style>
