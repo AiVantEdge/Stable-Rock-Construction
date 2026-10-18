@@ -68,8 +68,12 @@ export function Header({ active = 'home', lang = 'en', path = '/' }) {
     textDecoration: 'none', color: '#fff', fontFamily: T.body, fontSize: 13, fontWeight: 500,
     letterSpacing: 'var(--sr-tracking-nav)', textTransform: 'uppercase', opacity: .9, cursor: 'pointer',
   };
+  // Legal pages (privacy, terms, text-us) have no dark hero under the header, so give it a solid
+  // background and keep it in the flow; otherwise the white nav sits on cream and the title runs under the logo.
   return (
-    <header style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 90 }}>
+    <header style={active === 'legal'
+      ? { position: 'relative', zIndex: 90, background: 'var(--sr-charcoal)' }
+      : { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 90 }}>
       <UtilityBar isMobile={isMobile} t={t} />
       <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: isMobile ? '10px var(--sr-gutter)' : '14px var(--sr-gutter)' }}>
         <a href={L('/', lang)} style={{ textDecoration: 'none', cursor: 'pointer' }}>
