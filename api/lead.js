@@ -19,7 +19,10 @@ const HEADERS = (token) => ({
 // Resolve the "Services Requested" contact custom field's id once and reuse it
 // across warm invocations. Writing by id is the only reliable format for the
 // GHL v2 upsert (writing by key silently no-ops on some field types).
-let cachedServicesFieldId; // undefined = not resolved; string = id; null not cached (retry)
+// The site's token has no custom-fields read scope (lookup returns 401), so the known
+// id of "Services Requested" (contact.services_requested) is used first. Not a secret.
+const SERVICES_FIELD_ID = process.env.GHL_SERVICES_FIELD_ID || '32ejVH1VpNuXthJRJnXC';
+let cachedServicesFieldId = SERVICES_FIELD_ID; // undefined = not resolved; string = id; null not cached (retry)
 async function getServicesFieldId(token, locationId) {
   if (cachedServicesFieldId) return cachedServicesFieldId;
   const r = await fetch(`${GHL}/locations/${locationId}/customFields?model=contact`, {
