@@ -13,7 +13,7 @@ export const BUSINESS_ID = SITE + '/#business';
 export const OG_IMAGE = SITE + '/assets/imagery/hero-truck.webp';
 
 /* Measurement — fill these in to activate (both are inert while empty). */
-export const GA_MEASUREMENT_ID = ''; // e.g. 'G-XXXXXXXXXX' from a GA4 property
+export const GA_MEASUREMENT_ID = 'G-3KBTTRZYKT'; // e.g. 'G-XXXXXXXXXX' from a GA4 property
 export const GSC_VERIFICATION = ''; // content value of the Search Console meta tag
 
 /* Quote form posts to /api/lead (a Vercel serverless function) which creates the
