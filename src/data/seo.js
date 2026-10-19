@@ -14,7 +14,7 @@ export const OG_IMAGE = SITE + '/assets/imagery/hero-truck.webp';
 
 /* Measurement — fill these in to activate (both are inert while empty). */
 export const GA_MEASUREMENT_ID = 'G-3KBTTRZYKT'; // e.g. 'G-XXXXXXXXXX' from a GA4 property
-export const GSC_VERIFICATION = ''; // content value of the Search Console meta tag
+export const GSC_VERIFICATION = 'EGmuM03-m_GERrL9PO5Gqtnp7HGakhL-_QAGMRXVTPA'; // content value of the Search Console meta tag
 
 /* Quote form posts to /api/lead (a Vercel serverless function) which creates the
    contact in GoHighLevel (with service tags + a note), firing the sub-account's
